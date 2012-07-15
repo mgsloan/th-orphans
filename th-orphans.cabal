@@ -7,7 +7,7 @@ license-file:       LICENSE
 category:           Template Haskell
 author:             Matt Morrow
 copyright:          (c) Matt Morrow
-maintainer:         Michael Sloan <mgsloan@gmail.com>
+maintainer:         Michael Sloan <mgsloan at gmail>
 bug-reports:        https://github.com/mgsloan/th-orphans/issues
 stability:          experimental
 tested-with:        GHC == 6.12.3, GHC == 7.0.4, GHC == 7.2.2, GHC == 7.4.1
