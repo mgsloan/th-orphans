@@ -11,12 +11,21 @@
   Portability :  portable (template-haskell)
 -}
 
+-- | Provides Ord and Lift instances for the TH datatypes.  Also provides
+--   Show / Eq for Loc, and Ppr for Loc / Lit.
 module Language.Haskell.TH.Instances () where
 
 import Language.Haskell.TH.Syntax
 import Language.Haskell.TH.Ppr
 import Language.Haskell.TH.Lift (deriveLiftMany)
 
+deriving instance Show Loc
+
+deriving instance Eq Loc
+deriving instance Eq Info
+
+deriving instance Ord Info
+deriving instance Ord Fixity
 deriving instance Ord Exp
 deriving instance Ord Dec
 deriving instance Ord Stmt
@@ -44,8 +53,11 @@ deriving instance Ord InlineSpec
 deriving instance Ord Pragma
 #endif /* MIN_VERSION_template_haskell(2,4,0) */
 
-deriving instance Show Loc
-deriving instance Eq Loc
+instance Ord FixityDirection where
+  (<=) InfixL _      = True
+  (<=) _      InfixR = True
+  (<=) InfixN InfixN = True
+  (<=) _      _      = False
 
 -- TODO: make this better
 instance Ppr Loc where
