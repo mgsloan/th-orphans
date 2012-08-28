@@ -15,7 +15,7 @@ synopsis:           Orphan instances for TH datatypes
 description:        In particular, instances for Ord and Lift.
                     
 library
-  build-depends:   base >= 4.2 && < 4.6,
+  build-depends:   base >= 4.2 && < 4.7,
                    th-lift == 0.5.*
 
   if impl(ghc >= 7.4)
