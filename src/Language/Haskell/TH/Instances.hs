@@ -69,11 +69,10 @@ deriving instance Ord InlineSpec
 deriving instance Ord Kind
 #endif
 
-{- TODO: test?
 #if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
-deriving instance ClassInstance
+deriving instance Eq ClassInstance
+deriving instance Ord ClassInstance
 #endif
--}
 
 #if MIN_VERSION_template_haskell(2,8,0)
 deriving instance Ord Inline
