@@ -6,7 +6,7 @@
   Module      :  Language.Haskell.TH.Instances.Lift
   Copyright   :  (c) Matt Morrow 2008
   License     :  BSD3
-  Maintainer  :  Matt Morrow <mjm2002@gmail.com>
+  Maintainer  :  Michael Sloan <mgsloan at gmail>
   Stability   :  experimental
   Portability :  portable (template-haskell)
 -}
