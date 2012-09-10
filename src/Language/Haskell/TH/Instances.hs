@@ -61,13 +61,11 @@ deriving instance Ord FamFlavour
 deriving instance Ord Pragma
 deriving instance Ord Pred
 deriving instance Ord TyVarBndr
-
 #endif
 
 #if MIN_VERSION_template_haskell(2,4,0) && !(MIN_VERSION_template_haskell(2,8,0))
 deriving instance Ord InlineSpec
 deriving instance Ord Kind
-
 #endif
 
 #if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
