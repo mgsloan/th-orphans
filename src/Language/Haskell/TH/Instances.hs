@@ -1,6 +1,5 @@
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE StandaloneDeriving, TemplateHaskell #-}
-{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE StandaloneDeriving, DeriveGeneric, TypeSynonymInstances, TemplateHaskell #-}
 
 {- |
   Module      :  Language.Haskell.TH.Instances.Lift
@@ -19,7 +18,7 @@ import Language.Haskell.TH.Syntax
 import Language.Haskell.TH.Ppr
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import GHC.Word ( Word8 )
-
+import GHC.Generics ( Generic )
 
 -- Orphan Show instances
 deriving instance Show Loc
@@ -62,11 +61,13 @@ deriving instance Ord FamFlavour
 deriving instance Ord Pragma
 deriving instance Ord Pred
 deriving instance Ord TyVarBndr
+
 #endif
 
 #if MIN_VERSION_template_haskell(2,4,0) && !(MIN_VERSION_template_haskell(2,8,0))
 deriving instance Ord InlineSpec
 deriving instance Ord Kind
+
 #endif
 
 #if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
@@ -80,8 +81,46 @@ deriving instance Ord Phases
 deriving instance Ord RuleBndr
 deriving instance Ord RuleMatch
 deriving instance Ord TyLit
+
+deriving instance Generic Inline
+deriving instance Generic Phases
+deriving instance Generic RuleBndr
+deriving instance Generic RuleMatch
+deriving instance Generic TyLit
 #endif
 
+#if MIN_VERSION_template_haskell(2,6,0)
+deriving instance Generic Loc
+deriving instance Generic Info
+deriving instance Generic Fixity
+deriving instance Generic Exp
+deriving instance Generic Dec
+deriving instance Generic Stmt
+deriving instance Generic Type
+deriving instance Generic Foreign
+deriving instance Generic FunDep
+deriving instance Generic Con
+deriving instance Generic Body
+deriving instance Generic Clause
+deriving instance Generic Strict
+deriving instance Generic Safety
+deriving instance Generic Callconv
+deriving instance Generic Guard
+deriving instance Generic Range
+deriving instance Generic Match
+deriving instance Generic Pat
+deriving instance Generic Lit
+
+#if !MIN_VERSION_template_haskell(2,7,0)
+deriving instance Generic ClassInstance
+#endif
+
+#if !MIN_VERSION_template_haskell(2,8,0)
+deriving instance Generic InlineSpec
+deriving instance Generic Kind
+#endif
+
+#endif
 
 -- Orphan Ppr instances
 -- TODO: make this better
@@ -92,8 +131,7 @@ instance Ppr Lit where
   ppr l = ppr (LitE l)
 
 -- Orphan Lift instances (for when your TH generates TH!)
--- TODO: Shouldn't this have explicit type signatures?
---       This follows the pattern of the Lift instances for Int / Integer.
+-- This follows the pattern of the Lift instances for Int / Integer.
 instance Lift Word8 where
   lift w = [e| fromIntegral $(lift (fromIntegral w :: Int)) |]
 
