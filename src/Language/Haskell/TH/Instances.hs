@@ -18,7 +18,6 @@ import Language.Haskell.TH.Syntax
 import Language.Haskell.TH.Ppr
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import GHC.Word ( Word8 )
-import GHC.Generics ( Generic )
 
 -- Orphan Show instances
 deriving instance Show Loc
@@ -79,45 +78,6 @@ deriving instance Ord Phases
 deriving instance Ord RuleBndr
 deriving instance Ord RuleMatch
 deriving instance Ord TyLit
-
-deriving instance Generic Inline
-deriving instance Generic Phases
-deriving instance Generic RuleBndr
-deriving instance Generic RuleMatch
-deriving instance Generic TyLit
-#endif
-
-#if MIN_VERSION_template_haskell(2,6,0)
-deriving instance Generic Loc
-deriving instance Generic Info
-deriving instance Generic Fixity
-deriving instance Generic Exp
-deriving instance Generic Dec
-deriving instance Generic Stmt
-deriving instance Generic Type
-deriving instance Generic Foreign
-deriving instance Generic FunDep
-deriving instance Generic Con
-deriving instance Generic Body
-deriving instance Generic Clause
-deriving instance Generic Strict
-deriving instance Generic Safety
-deriving instance Generic Callconv
-deriving instance Generic Guard
-deriving instance Generic Range
-deriving instance Generic Match
-deriving instance Generic Pat
-deriving instance Generic Lit
-
-#if !MIN_VERSION_template_haskell(2,7,0)
-deriving instance Generic ClassInstance
-#endif
-
-#if !MIN_VERSION_template_haskell(2,8,0)
-deriving instance Generic InlineSpec
-deriving instance Generic Kind
-#endif
-
 #endif
 
 -- Orphan Ppr instances
