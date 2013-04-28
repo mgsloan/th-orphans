@@ -80,6 +80,10 @@ deriving instance Ord RuleMatch
 deriving instance Ord TyLit
 #endif
 
+#if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Ord TySynEqn
+#endif
+
 -- Orphan Ppr instances
 -- TODO: make this better
 instance Ppr Loc where
@@ -136,6 +140,10 @@ $(deriveLiftMany [ ''Body
                  , ''RuleBndr
                  , ''RuleMatch
                  , ''TyLit
+#endif
+
+#if MIN_VERSION_template_haskell(2,9,0)
+                 , ''TySynEqn
 #endif
                  ])
 
