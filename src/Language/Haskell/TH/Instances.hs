@@ -8,10 +8,10 @@
   Maintainer  :  Michael Sloan <mgsloan at gmail>
   Stability   :  experimental
   Portability :  portable (template-haskell)
--}
 
--- | Provides Ord and Lift instances for the TH datatypes.  Also provides
---   Show / Eq for Loc, and Ppr for Loc / Lit.
+  Provides Ord and Lift instances for the TH datatypes.  Also provides
+  Show / Eq for Loc, and Ppr for Loc / Lit.
+-}
 module Language.Haskell.TH.Instances () where
 
 import Language.Haskell.TH.Syntax
