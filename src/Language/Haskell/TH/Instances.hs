@@ -136,7 +136,7 @@ $(deriveLiftMany [ ''Body
 
 #if MIN_VERSION_template_haskell(2,8,0)
                  , ''Inline
-                 , ''Phases 
+                 , ''Phases
                  , ''RuleBndr
                  , ''RuleMatch
                  , ''TyLit
