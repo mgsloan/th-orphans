@@ -143,6 +143,7 @@ $(deriveLiftMany [ ''Body
 #endif
 
 #if MIN_VERSION_template_haskell(2,9,0)
+                 , ''Role
                  , ''TySynEqn
 #endif
                  ])
