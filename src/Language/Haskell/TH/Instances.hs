@@ -148,4 +148,3 @@ $(deriveLiftMany [ ''Body
                  , ''TySynEqn
 #endif
                  ])
-
