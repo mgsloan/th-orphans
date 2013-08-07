@@ -81,6 +81,7 @@ deriving instance Ord TyLit
 #endif
 
 #if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Ord Role
 deriving instance Ord TySynEqn
 #endif
 
