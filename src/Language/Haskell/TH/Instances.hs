@@ -81,6 +81,7 @@ deriving instance Ord TyLit
 #endif
 
 #if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Ord AnnTarget
 deriving instance Ord Role
 deriving instance Ord TySynEqn
 #endif
@@ -97,10 +98,6 @@ instance Ppr Lit where
 -- This follows the pattern of the Lift instances for Int / Integer.
 instance Lift Word8 where
   lift w = [e| fromIntegral $(lift (fromIntegral w :: Int)) |]
-
-#if MIN_VERSION_template_haskell(2,9,0)
-deriving instance Ord AnnTarget
-#endif
 
 $(deriveLiftMany [ ''Body
                  , ''Callconv
@@ -148,8 +145,8 @@ $(deriveLiftMany [ ''Body
 #endif
 
 #if MIN_VERSION_template_haskell(2,9,0)
+                 , ''AnnTarget
                  , ''Role
                  , ''TySynEqn
-                 , ''AnnTarget
 #endif
                  ])
