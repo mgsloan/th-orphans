@@ -98,6 +98,10 @@ instance Ppr Lit where
 instance Lift Word8 where
   lift w = [e| fromIntegral $(lift (fromIntegral w :: Int)) |]
 
+#if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Ord AnnTarget
+#endif
+
 $(deriveLiftMany [ ''Body
                  , ''Callconv
                  , ''Clause
@@ -146,5 +150,6 @@ $(deriveLiftMany [ ''Body
 #if MIN_VERSION_template_haskell(2,9,0)
                  , ''Role
                  , ''TySynEqn
+                 , ''AnnTarget
 #endif
                  ])
