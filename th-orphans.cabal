@@ -19,13 +19,11 @@ description:        Orphan instances for TH datatypes.  In particular, instances
                     the version number started.
 
 library
-  build-depends:   base >= 4.2 && < 4.8,
-                   th-lift >= 0.5 && <0.7
-
-  if impl(ghc >= 7.4)
-    Build-depends: template-haskell >= 2.7 && < 2.10
-  else
-    Build-depends: template-haskell >= 2.4 && < 2.7
+  build-depends:   base >= 4.2,
+                   derive >= 2.0,
+                   template-haskell,
+                   th-lift >= 0.5,
+                   th-reify-many >= 0.1 && < 0.2
 
   hs-source-dirs:  src
   exposed-modules: Language.Haskell.TH.Instances
@@ -33,4 +31,3 @@ library
 source-repository head
   type:     git
   location: git://github.com/mgsloan/th-orphans.git
-
