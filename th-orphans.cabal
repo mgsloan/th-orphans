@@ -19,14 +19,15 @@ description:        Orphan instances for TH datatypes.  In particular, instances
                     the version number started.
 
 library
-  build-depends:   base >= 4.2,
-                   derive >= 2.0,
+  build-depends:   base >= 4.2 && < 5,
                    template-haskell,
                    th-lift >= 0.5,
                    th-reify-many >= 0.1 && < 0.2
 
   hs-source-dirs:  src
+  ghc-options:     -Wall
   exposed-modules: Language.Haskell.TH.Instances
+  other-modules:   Language.Haskell.TH.Instances.Internal
 
 source-repository head
   type:     git

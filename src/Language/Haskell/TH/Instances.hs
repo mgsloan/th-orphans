@@ -1,7 +1,8 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE CPP #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
 -- Module      :  Language.Haskell.TH.Instances.Lift
@@ -16,18 +17,21 @@
 -- well as 'Ppr' for 'Loc' and 'Lit'.
 module Language.Haskell.TH.Instances () where
 
-import Data.Derive.Ord (makeOrd)
-import Data.DeriveTH (derives)
+import GHC.Real (Ratio)
 import GHC.Word (Word8)
+import Language.Haskell.TH
+import Language.Haskell.TH.Instances.Internal
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import Language.Haskell.TH.Ppr
 import Language.Haskell.TH.ReifyMany
 import Language.Haskell.TH.Syntax
 
 -- Orphan Show instances
+
 deriving instance Show Loc
 
 -- Orphan Eq instances
+
 deriving instance Eq Loc
 deriving instance Eq Info
 #if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
@@ -35,16 +39,18 @@ deriving instance Eq ClassInstance
 #endif
 
 -- Orphan Ord instances
+
 instance Ord FixityDirection where
   (<=) InfixL _      = True
   (<=) _      InfixR = True
   (<=) InfixN InfixN = True
   (<=) _      _      = False
 
-$(reifyManyWithoutInstances ''Ord [''Info] (const True) >>=
-  derives [makeOrd])
+$(reifyManyWithoutInstances ''Ord [''Info] (`notElem` [''Ratio]) >>=
+  mapM deriveOrd)
 
 -- Orphan Ppr instances
+
 -- TODO: make this better
 instance Ppr Loc where
   ppr = showtextl . show
