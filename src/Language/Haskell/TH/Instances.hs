@@ -60,5 +60,5 @@ deriving instance Eq ClassInstance
 $(reifyManyWithoutInstances ''Ord [''Info] (`notElem` [''Ratio]) >>=
   mapM deriveOrd)
 
-$(reifyManyWithoutInstances ''Lift [''Info] (const True) >>=
+$(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
   deriveLiftMany)
