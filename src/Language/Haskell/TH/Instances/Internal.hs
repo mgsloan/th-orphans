@@ -2,6 +2,7 @@
 
 module Language.Haskell.TH.Instances.Internal where
 
+import Data.Generics (toConstr, constrIndex)
 import Language.Haskell.TH
 
 -- Overall structure taken from
@@ -34,8 +35,10 @@ deriveOrd n = do
             if length cons <= 1
                then []
                else [Clause [VarP nx, VarP ny]
-                           (NormalB (AppE (AppE (VarE 'compare) (VarE nx)) (VarE ny)))
-                           []]
+                            (NormalB (AppE (AppE (VarE 'compare)
+                                                 (AppE (VarE 'constrIndex) (AppE (VarE 'toConstr) (VarE nx))))
+                                           (AppE (VarE 'constrIndex) (AppE (VarE 'toConstr) (VarE ny)))))
+                            []]
     tagClauses <- flip mapM (zip [0..] cons) $ \(ix, con) -> do
         (pat, _) <- conToPat con
         return $ Clause [pat]
