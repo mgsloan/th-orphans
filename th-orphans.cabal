@@ -10,8 +10,7 @@ copyright:          (c) Matt Morrow
 maintainer:         Michael Sloan <mgsloan at gmail>
 bug-reports:        https://github.com/mgsloan/th-orphans/issues
 stability:          experimental
-tested-with:        GHC == 6.12.3, GHC == 7.0.4, GHC == 7.2.2, GHC == 7.4.2,
-                    GHC == 7.6.1, GHC == 7.8
+tested-with:        GHC == 7.4.2, GHC == 7.6.1, GHC == 7.8
 synopsis:           Orphan instances for TH datatypes
 description:        Orphan instances for TH datatypes.  In particular, instances
                     for Ord and Lift, as well as a few missing Show / Eq.  These
