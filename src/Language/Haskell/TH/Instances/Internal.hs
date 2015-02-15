@@ -2,7 +2,7 @@
 
 module Language.Haskell.TH.Instances.Internal where
 
-import Data.Generics (toConstr, constrIndex)
+import Data.Data (toConstr, constrIndex)
 import Language.Haskell.TH
 
 -- Overall structure taken from
