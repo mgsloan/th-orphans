@@ -1,6 +1,6 @@
 name:               th-orphans
 version:            0.9.0
-cabal-version:      >= 1.6
+cabal-version:      >= 1.10
 build-type:         Simple
 license:            BSD3
 license-file:       LICENSE
@@ -27,6 +27,16 @@ library
   ghc-options:     -Wall
   exposed-modules: Language.Haskell.TH.Instances
   other-modules:   Language.Haskell.TH.Instances.Internal
+
+
+test-suite test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , th-orphans
+                     , hspec
+                     , template-haskell
 
 source-repository head
   type:     git
