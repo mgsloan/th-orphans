@@ -34,7 +34,9 @@ deriveOrd n = do
             if length cons <= 1
                then []
                else [Clause [VarP nx, VarP ny]
-                           (NormalB (AppE (AppE (VarE 'compare) (VarE nx)) (VarE ny)))
+                           (NormalB (AppE (AppE (VarE 'compare)
+                                                (AppE (VarE ntag) (VarE nx)))
+                                          (AppE (VarE ntag) (VarE ny))))
                            []]
     tagClauses <- flip mapM (zip [0..] cons) $ \(ix, con) -> do
         (pat, _) <- conToPat con
