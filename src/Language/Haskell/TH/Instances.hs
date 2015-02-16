@@ -15,6 +15,10 @@
 -- Provides 'Ord' and 'Lift' instances for the datatypes in
 -- "Language.Haskell.TH".  Also provides 'Show' and 'Eq' for 'Loc', as
 -- well as 'Ppr' for 'Loc' and 'Lit'.
+--
+-- Note that the 'Ord' instances are not guaranteed to produce
+-- consistent results across template-haskell / GHC versions, as they
+-- have different data types, with different constructor orders.
 module Language.Haskell.TH.Instances () where
 
 import GHC.Real (Ratio)
