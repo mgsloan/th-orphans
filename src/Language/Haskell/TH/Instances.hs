@@ -45,6 +45,47 @@ instance Ord FixityDirection where
   (<=) InfixN InfixN = True
   (<=) _      _      = False
 
+#if __GLASGOW_HASKELL__ < 710
+deriving instance Ord Info
+deriving instance Ord Dec
+deriving instance Ord Clause
+deriving instance Ord Pat
+deriving instance Ord Lit
+deriving instance Ord Type
+deriving instance Ord TyVarBndr
+deriving instance Ord Pred
+deriving instance Ord Exp
+deriving instance Ord Match
+deriving instance Ord Body
+deriving instance Ord Guard
+deriving instance Ord Stmt
+deriving instance Ord Range
+deriving instance Ord Con
+deriving instance Ord Strict
+deriving instance Ord FunDep
+deriving instance Ord Foreign
+deriving instance Ord Callconv
+deriving instance Ord Safety
+deriving instance Ord Fixity
+deriving instance Ord Pragma
+deriving instance Ord FamFlavour
+#if MIN_VERSION_template_haskell(2,8,0)
+#if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Ord AnnTarget
+deriving instance Ord TySynEqn
+deriving instance Ord Role
+#endif
+deriving instance Ord TyLit
+deriving instance Ord Inline
+deriving instance Ord RuleMatch
+deriving instance Ord Phases
+deriving instance Ord RuleBndr
+#else
+deriving instance Ord Kind
+deriving instance Ord InlineSpec
+#endif
+#endif
+
 -- TODO: make this better
 instance Ppr Loc where
   ppr = showtextl . show
