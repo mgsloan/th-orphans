@@ -18,23 +18,25 @@ description:        Orphan instances for TH datatypes.  In particular, instances
                     the version number started.
 
 library
-  build-depends:   base >= 4.2 && < 5,
-                   template-haskell,
-                   th-lift >= 0.5,
-                   th-reify-many >= 0.1 && < 0.2
-  hs-source-dirs:  src
-  ghc-options:     -Wall
-  exposed-modules: Language.Haskell.TH.Instances
+  build-depends:    base >= 4.2 && < 5,
+                    template-haskell,
+                    th-lift >= 0.5,
+                    th-reify-many >= 0.1 && < 0.2
+  hs-source-dirs:   src
+  ghc-options:      -Wall
+  exposed-modules:  Language.Haskell.TH.Instances
+  default-language: Haskell2010
 
 
 test-suite test
-  type:                exitcode-stdio-1.0
-  hs-source-dirs:      test
-  main-is:             Spec.hs
-  build-depends:       base
-                     , th-orphans
-                     , hspec
-                     , template-haskell
+  type:             exitcode-stdio-1.0
+  hs-source-dirs:   test
+  main-is:          Spec.hs
+  build-depends:    base,
+                    th-orphans,
+                    hspec,
+                    template-haskell
+  default-language: Haskell2010
 
 source-repository head
   type:     git
