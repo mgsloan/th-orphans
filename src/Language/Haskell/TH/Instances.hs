@@ -2,6 +2,17 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE CPP #-}
+
+#if defined(__GLASGOW_HASKELL__)
+# define LANGUAGE_DeriveDataTypeable
+{-# LANGUAGE DeriveDataTypeable #-}
+#endif
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 704
+# define LANGUAGE_DeriveGeneric
+{-# LANGUAGE DeriveGeneric #-}
+#endif
+
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
@@ -21,7 +32,6 @@
 -- have different data types, with different constructor orders.
 module Language.Haskell.TH.Instances () where
 
-import GHC.Real (Ratio)
 import Language.Haskell.TH
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import Language.Haskell.TH.ReifyMany
@@ -30,34 +40,38 @@ import Language.Haskell.TH.Syntax
 -- Thanks to Richard Eisenberg, GHC 7.10 adds many of the instances
 -- from this module.
 #if !MIN_VERSION_template_haskell(2,10,0)
-import GHC.Word (Word8)
+import Data.Int (Int8, Int16, Int32, Int64)
+-- import Data.Ratio (Ratio)
+import Data.Word (Word8, Word16, Word32, Word64)
+import Numeric.Natural (Natural)
+
 import Language.Haskell.TH.Ppr
+# if MIN_VERSION_template_haskell(2,3,0)
+import Language.Haskell.TH.PprLib
+# endif
+# if MIN_VERSION_template_haskell(2,4,0) && !(MIN_VERSION_template_haskell(2,8,0))
+import Language.Haskell.TH.Syntax.Internals
+# endif
 
-deriving instance Show Loc
+# if !(MIN_VERSION_template_haskell(2,9,0))
+#  if !(MIN_VERSION_base(4,8,0))
+import Control.Applicative (Applicative(..))
+#  endif
+import Control.Monad (ap, liftM)
+# endif
 
-deriving instance Eq Loc
-deriving instance Eq Info
+# if !(MIN_VERSION_base(4,8,0))
+import Data.Word (Word)
+# endif
 
-instance Ord FixityDirection where
-  (<=) InfixL _      = True
-  (<=) _      InfixR = True
-  (<=) InfixN InfixN = True
-  (<=) _      _      = False
+# if MIN_VERSION_template_haskell(2,3,0) && defined(LANGUAGE_DeriveDataTypeable)
+import Data.Data (Data, Typeable)
+# endif
 
--- TODO: make this better
-instance Ppr Loc where
-  ppr = showtextl . show
-
-instance Ppr Lit where
-  ppr l = ppr (LitE l)
-
--- This follows the pattern of the Lift instances for Int / Integer.
-instance Lift Word8 where
-  lift w = [e| fromIntegral $(lift (fromIntegral w :: Int)) |]
+# if defined(LANGUAGE_DeriveGeneric)
+import GHC.Generics (Generic)
+# endif
 #endif
-
-$(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
-  deriveLiftMany)
 
 -- Ideally, it'd be possible to use reifyManyWithoutInstances for
 -- these Ord instances, but TH can't output deriving instances (and
@@ -68,54 +82,210 @@ $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
 
 -- GHC 7.10 comes with Ord instances for TH datatypes.
 #if !MIN_VERSION_template_haskell(2,10,0)
-deriving instance Ord Info
-deriving instance Ord Fixity
-deriving instance Ord Exp
+instance Ppr Lit where
+    ppr = pprLit noPrec
+
+-- This follows the pattern of the Lift instances for Int / Integer.
+instance Lift Int8 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Int16 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Int32 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Int64 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Word where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Word8 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Word16 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Word32 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Word64 where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+instance Lift Natural where
+    lift x = return (LitE (IntegerL (fromIntegral x)))
+
+-- instance Integral a => Lift (Ratio a) where
+--     lift x = return (LitE (RationalL (toRational x)))
+
+instance Lift Float where
+    lift x = return (LitE (RationalL (toRational x)))
+
+instance Lift Double where
+    lift x = return (LitE (RationalL (toRational x)))
+
+deriving instance Eq Info
+
+deriving instance Ord Body
+deriving instance Ord Callconv
+deriving instance Ord Clause
+deriving instance Ord Con
 deriving instance Ord Dec
-deriving instance Ord Stmt
-deriving instance Ord Type
+deriving instance Ord Exp
+deriving instance Ord Fixity
+deriving instance Ord FixityDirection
 deriving instance Ord Foreign
 deriving instance Ord FunDep
-deriving instance Ord Con
-deriving instance Ord Body
-deriving instance Ord Clause
-deriving instance Ord Strict
-deriving instance Ord Safety
-deriving instance Ord Callconv
 deriving instance Ord Guard
-deriving instance Ord Range
+deriving instance Ord Info
+deriving instance Ord Lit
 deriving instance Ord Match
 deriving instance Ord Pat
-deriving instance Ord Lit
+deriving instance Ord Range
+deriving instance Ord Safety
+deriving instance Ord Stmt
+deriving instance Ord Strict
+deriving instance Ord Type
 
-#if MIN_VERSION_template_haskell(2,4,0)
+# if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic Body
+deriving instance Generic Callconv
+deriving instance Generic Clause
+deriving instance Generic Con
+deriving instance Generic Dec
+deriving instance Generic Exp
+deriving instance Generic Fixity
+deriving instance Generic FixityDirection
+deriving instance Generic Foreign
+deriving instance Generic FunDep
+deriving instance Generic Guard
+deriving instance Generic Info
+deriving instance Generic Lit
+deriving instance Generic Match
+deriving instance Generic Name
+deriving instance Generic NameSpace
+deriving instance Generic Pat
+deriving instance Generic Range
+deriving instance Generic Safety
+deriving instance Generic Stmt
+deriving instance Generic Strict
+deriving instance Generic Type
+# endif
+
+# if MIN_VERSION_template_haskell(2,3,0)
+instance Ppr Loc where
+    ppr (Loc { loc_module = md
+             , loc_package = pkg
+             , loc_start = (start_ln, start_col)
+             , loc_end = (end_ln, end_col) })
+      = hcat [ text pkg, colon, text md, colon
+             , parens $ int start_ln <> comma <> int start_col
+             , text "-"
+             , parens $ int end_ln <> comma <> int end_col ]
+
+deriving instance Eq Loc
+deriving instance Ord Loc
+deriving instance Show Loc
+
+#  if defined(LANGUAGE_DeriveDataTypeable)
+deriving instance Data Loc
+deriving instance Typeable Loc
+#  endif
+
+#  if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic Loc
+#  endif
+# endif
+
+# if MIN_VERSION_template_haskell(2,4,0)
 deriving instance Ord FamFlavour
 deriving instance Ord Pragma
 deriving instance Ord Pred
 deriving instance Ord TyVarBndr
-#endif
 
-#if MIN_VERSION_template_haskell(2,4,0) && !(MIN_VERSION_template_haskell(2,8,0))
+#  if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic FamFlavour
+deriving instance Generic ModName
+deriving instance Generic OccName
+deriving instance Generic PkgName
+deriving instance Generic Pragma
+deriving instance Generic Pred
+deriving instance Generic TyVarBndr
+#  endif
+
+#  if !(MIN_VERSION_template_haskell(2,8,0))
 deriving instance Ord InlineSpec
 deriving instance Ord Kind
-#endif
 
-#if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
+#   if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic InlineSpec
+deriving instance Generic Kind
+#   endif
+#  endif
+# endif
+
+# if MIN_VERSION_template_haskell(2,5,0) && !(MIN_VERSION_template_haskell(2,7,0))
 deriving instance Eq ClassInstance
 deriving instance Ord ClassInstance
-#endif
 
-#if MIN_VERSION_template_haskell(2,8,0)
+#  if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic ClassInstance
+#  endif
+# endif
+
+# if !(MIN_VERSION_template_haskell(2,7,0))
+instance Applicative Q where 
+    pure  = return
+    (<*>) = ap
+# endif
+
+# if MIN_VERSION_template_haskell(2,8,0)
 deriving instance Ord Inline
 deriving instance Ord Phases
 deriving instance Ord RuleBndr
 deriving instance Ord RuleMatch
 deriving instance Ord TyLit
-#endif
 
-#if MIN_VERSION_template_haskell(2,9,0)
+#  if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic Inline
+deriving instance Generic Phases
+deriving instance Generic RuleBndr
+deriving instance Generic RuleMatch
+deriving instance Generic TyLit
+#  endif
+# endif
+
+# if MIN_VERSION_template_haskell(2,9,0)
+deriving instance Eq ModuleInfo
+
+deriving instance Ord AnnLookup
 deriving instance Ord AnnTarget
+deriving instance Ord ModuleInfo
 deriving instance Ord Role
 deriving instance Ord TySynEqn
+
+#  if defined(LANGUAGE_DeriveGeneric)
+deriving instance Generic AnnLookup
+deriving instance Generic AnnTarget
+deriving instance Generic Module
+deriving instance Generic ModuleInfo
+deriving instance Generic Role
+deriving instance Generic TySynEqn
+#  endif
+# else
+deriving instance Show ModName
+deriving instance Show OccName
+deriving instance Show PkgName
+
+instance Functor PprM where
+    fmap = liftM
+
+instance Applicative PprM where
+    pure  = return
+    (<*>) = ap
+# endif
 #endif
-#endif
+
+$(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
+  deriveLiftMany)

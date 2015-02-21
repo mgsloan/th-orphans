@@ -19,6 +19,7 @@ description:        Orphan instances for TH datatypes.  In particular, instances
 
 library
   build-depends:    base >= 4.2 && < 5,
+                    nats >= 0.1 && < 2,
                     template-haskell,
                     th-lift >= 0.5,
                     th-reify-many >= 0.1 && < 0.2
