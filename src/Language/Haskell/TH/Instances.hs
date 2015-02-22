@@ -41,7 +41,6 @@ import Language.Haskell.TH.Syntax
 -- from this module.
 #if !MIN_VERSION_template_haskell(2,10,0)
 import Data.Int (Int8, Int16, Int32, Int64)
--- import Data.Ratio (Ratio)
 import Data.Word (Word8, Word16, Word32, Word64)
 import Numeric.Natural (Natural)
 
@@ -115,9 +114,6 @@ instance Lift Word64 where
 
 instance Lift Natural where
     lift x = return (LitE (IntegerL (fromIntegral x)))
-
--- instance Integral a => Lift (Ratio a) where
---     lift x = return (LitE (RationalL (toRational x)))
 
 instance Lift Float where
     lift x = return (LitE (RationalL (toRational x)))
