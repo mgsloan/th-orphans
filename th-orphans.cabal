@@ -21,7 +21,8 @@ library
   build-depends:    base >= 4.2 && < 5,
                     nats >= 0.1 && < 2,
                     template-haskell,
-                    th-lift >= 0.5,
+                    -- https://github.com/mboes/th-lift/issues/14
+                    th-lift >= 0.7.1,
                     th-reify-many >= 0.1 && < 0.2
 
   -- Prior to GHC 7.6, GHC generics lived in ghc-prim
