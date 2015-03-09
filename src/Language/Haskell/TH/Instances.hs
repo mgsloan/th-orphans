@@ -23,9 +23,20 @@
 -- Stability   :  experimental
 -- Portability :  portable (template-haskell)
 --
--- Provides 'Ord' and 'Lift' instances for the datatypes in
--- "Language.Haskell.TH".  Also provides 'Show' and 'Eq' for 'Loc', as
--- well as 'Ppr' for 'Loc' and 'Lit'.
+-- It provides the following instances:
+--
+--   * 'Ord', 'Lift', 'Generic', 'Show', 'Eq', 'Data', 'Typeable',
+--   'Ppr', instances for the datatypes in "Language.Haskell.TH"
+--
+--   * 'Lift' instances for "Data.Word" / "Data.Int" types
+--
+--   * 'Applicative' for 'Q'
+--
+--   * 'Quasi' for 'ReaderT', 'WriterT', 'StateT', and 'RWST'.
+--
+-- More recent versions of template-haskell, particularly 2.10 (GHC
+-- 7.10), provide these instances.  However, in order to support older
+-- versions you should import this module.
 --
 -- Note that the 'Ord' instances are not guaranteed to produce
 -- consistent results across template-haskell / GHC versions, as they
