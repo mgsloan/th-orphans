@@ -238,7 +238,7 @@ deriving instance Generic ClassInstance
 # endif
 
 # if !(MIN_VERSION_template_haskell(2,7,0))
-instance Applicative Q where 
+instance Applicative Q where
     pure  = return
     (<*>) = ap
 # endif
