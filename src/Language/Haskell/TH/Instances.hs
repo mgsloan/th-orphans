@@ -301,9 +301,6 @@ instance Applicative PprM where
 # endif
 #endif
 
-$(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
-  deriveLiftMany)
-
 instance Quasi m => Quasi (ReaderT r m) where
   qNewName          = MTL.lift . qNewName
   qReport a b       = MTL.lift $ qReport a b
@@ -385,3 +382,6 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
 #endif
+
+$(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
+  deriveLiftMany)
