@@ -306,12 +306,13 @@ instance Quasi m => Quasi (ReaderT r m) where
   qReport a b       = MTL.lift $ qReport a b
   qRecover m1 m2    = ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r
   qReify            = MTL.lift . qReify
-  qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
   qLocation         = MTL.lift qLocation
   qRunIO            = MTL.lift . qRunIO
+#if MIN_VERSION_template_haskell(2,7,0)
+  qReifyInstances a b = MTL.lift $ qReifyInstances a b
+  qLookupName a b   = MTL.lift $ qLookupName a b
   qAddDependentFile = MTL.lift . qAddDependentFile
-#if __GLASGOW_HASKELL__ >= 707
+#if MIN_VERSION_template_haskell(2,9,0)
   qReifyRoles       = MTL.lift . qReifyRoles
   qReifyAnnotations = MTL.lift . qReifyAnnotations
   qReifyModule      = MTL.lift . qReifyModule
@@ -319,6 +320,7 @@ instance Quasi m => Quasi (ReaderT r m) where
   qAddModFinalizer  = MTL.lift . qAddModFinalizer
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
+#endif
 #endif
 
 instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
@@ -326,12 +328,13 @@ instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
   qReport a b       = MTL.lift $ qReport a b
   qRecover m1 m2    = WriterT $ runWriterT m1 `qRecover` runWriterT m2
   qReify            = MTL.lift . qReify
-  qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
   qLocation         = MTL.lift qLocation
   qRunIO            = MTL.lift . qRunIO
+#if MIN_VERSION_template_haskell(2,7,0)
+  qReifyInstances a b = MTL.lift $ qReifyInstances a b
+  qLookupName a b   = MTL.lift $ qLookupName a b
   qAddDependentFile = MTL.lift . qAddDependentFile
-#if __GLASGOW_HASKELL__ >= 707
+#if MIN_VERSION_template_haskell(2,9,0)
   qReifyRoles       = MTL.lift . qReifyRoles
   qReifyAnnotations = MTL.lift . qReifyAnnotations
   qReifyModule      = MTL.lift . qReifyModule
@@ -340,19 +343,20 @@ instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
 #endif
+#endif
 
-#if 1
 instance Quasi m => Quasi (StateT s m) where
   qNewName          = MTL.lift . qNewName
   qReport a b       = MTL.lift $ qReport a b
   qRecover m1 m2    = StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s
   qReify            = MTL.lift . qReify
-  qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
   qLocation         = MTL.lift qLocation
   qRunIO            = MTL.lift . qRunIO
+#if MIN_VERSION_template_haskell(2,7,0)
+  qReifyInstances a b = MTL.lift $ qReifyInstances a b
+  qLookupName a b   = MTL.lift $ qLookupName a b
   qAddDependentFile = MTL.lift . qAddDependentFile
-#if __GLASGOW_HASKELL__ >= 707
+#if MIN_VERSION_template_haskell(2,9,0)
   qReifyRoles       = MTL.lift . qReifyRoles
   qReifyAnnotations = MTL.lift . qReifyAnnotations
   qReifyModule      = MTL.lift . qReifyModule
@@ -368,12 +372,13 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qReport a b       = MTL.lift $ qReport a b
   qRecover m1 m2    = RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s
   qReify            = MTL.lift . qReify
-  qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
   qLocation         = MTL.lift qLocation
   qRunIO            = MTL.lift . qRunIO
+#if MIN_VERSION_template_haskell(2,7,0)
+  qReifyInstances a b = MTL.lift $ qReifyInstances a b
+  qLookupName a b   = MTL.lift $ qLookupName a b
   qAddDependentFile = MTL.lift . qAddDependentFile
-#if __GLASGOW_HASKELL__ >= 707
+#if MIN_VERSION_template_haskell(2,9,0)
   qReifyRoles       = MTL.lift . qReifyRoles
   qReifyAnnotations = MTL.lift . qReifyAnnotations
   qReifyModule      = MTL.lift . qReifyModule
@@ -381,6 +386,7 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qAddModFinalizer  = MTL.lift . qAddModFinalizer
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
+#endif
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
