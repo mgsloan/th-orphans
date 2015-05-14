@@ -34,6 +34,8 @@
 --
 --   * 'Quasi' for 'ReaderT', 'WriterT', 'StateT', and 'RWST'.
 --
+--   * 'Typeable' for 'Lift', 'Ppr', and 'Quasi'
+--
 -- More recent versions of template-haskell, particularly 2.10 (GHC
 -- 7.10), provide these instances.  However, in order to support older
 -- versions you should import this module.
@@ -387,6 +389,12 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
 #endif
+#endif
+
+#if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
+deriving instance Typeable Lift
+deriving instance Typeable Ppr
+deriving instance Typeable Quasi
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
