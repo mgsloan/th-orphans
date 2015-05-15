@@ -13,6 +13,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 #endif
 
+{-# OPTIONS_GHC -fno-warn-deprecations #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
@@ -33,6 +34,9 @@
 --   * 'Applicative' for 'Q'
 --
 --   * 'Quasi' for 'ReaderT', 'WriterT', 'StateT', and 'RWST'.
+--
+--   * 'Typeable' for 'Lift', 'NameIs', 'Ppr', 'PprM', 'Q', 'Quasi',
+--   'QuasiQuoter', and 'TExp'
 --
 -- More recent versions of template-haskell, particularly 2.10 (GHC
 -- 7.10), provide these instances.  However, in order to support older
@@ -65,6 +69,7 @@ import Numeric.Natural (Natural)
 import Language.Haskell.TH.Ppr
 # if MIN_VERSION_template_haskell(2,3,0)
 import Language.Haskell.TH.PprLib
+import Language.Haskell.TH.Quote
 # endif
 # if MIN_VERSION_template_haskell(2,4,0) && !(MIN_VERSION_template_haskell(2,8,0))
 import Language.Haskell.TH.Syntax.Internals
@@ -82,7 +87,7 @@ import Data.Word (Word)
 # endif
 
 # if MIN_VERSION_template_haskell(2,3,0) && defined(LANGUAGE_DeriveDataTypeable)
-import Data.Data (Data, Typeable)
+import Data.Data hiding (Fixity(..))
 # endif
 
 # if defined(LANGUAGE_DeriveGeneric)
@@ -162,6 +167,12 @@ deriving instance Ord Stmt
 deriving instance Ord Strict
 deriving instance Ord Type
 
+# if defined(LANGUAGE_DeriveDataTypeable)
+deriving instance Typeable  NameIs
+deriving instance Typeable1 PprM
+deriving instance Typeable1 Q
+# endif
+
 # if defined(LANGUAGE_DeriveGeneric)
 deriving instance Generic Body
 deriving instance Generic Callconv
@@ -205,6 +216,8 @@ deriving instance Show Loc
 #  if defined(LANGUAGE_DeriveDataTypeable)
 deriving instance Data Loc
 deriving instance Typeable Loc
+
+deriving instance Typeable QuasiQuoter
 #  endif
 
 #  if defined(LANGUAGE_DeriveGeneric)
@@ -278,6 +291,10 @@ deriving instance Ord AnnTarget
 deriving instance Ord ModuleInfo
 deriving instance Ord Role
 deriving instance Ord TySynEqn
+
+#  if defined(LANGUAGE_DeriveDataTypeable)
+deriving instance Typeable TExp
+#  endif
 
 #  if defined(LANGUAGE_DeriveGeneric)
 deriving instance Generic AnnLookup
@@ -387,6 +404,12 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qGetQ             = MTL.lift qGetQ
   qPutQ             = MTL.lift . qPutQ
 #endif
+#endif
+
+#if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
+deriving instance Typeable Lift
+deriving instance Typeable Ppr
+deriving instance Typeable Quasi
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
