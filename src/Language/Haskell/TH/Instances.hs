@@ -319,91 +319,99 @@ instance Applicative PprM where
 #endif
 
 instance Quasi m => Quasi (ReaderT r m) where
-  qNewName          = MTL.lift . qNewName
-  qReport a b       = MTL.lift $ qReport a b
-  qRecover m1 m2    = ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r
-  qReify            = MTL.lift . qReify
-  qLocation         = MTL.lift qLocation
-  qRunIO            = MTL.lift . qRunIO
+  qNewName            = MTL.lift . qNewName
+  qReport a b         = MTL.lift $ qReport a b
+  qRecover m1 m2      = ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r
+  qReify              = MTL.lift . qReify
+  qLocation           = MTL.lift qLocation
+  qRunIO              = MTL.lift . qRunIO
 #if MIN_VERSION_template_haskell(2,7,0)
   qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
-  qAddDependentFile = MTL.lift . qAddDependentFile
-#if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles       = MTL.lift . qReifyRoles
-  qReifyAnnotations = MTL.lift . qReifyAnnotations
-  qReifyModule      = MTL.lift . qReifyModule
-  qAddTopDecls      = MTL.lift . qAddTopDecls
-  qAddModFinalizer  = MTL.lift . qAddModFinalizer
-  qGetQ             = MTL.lift qGetQ
-  qPutQ             = MTL.lift . qPutQ
-#endif
+  qLookupName a b     = MTL.lift $ qLookupName a b
+  qAddDependentFile   = MTL.lift . qAddDependentFile
+# if MIN_VERSION_template_haskell(2,9,0)
+  qReifyRoles         = MTL.lift . qReifyRoles
+  qReifyAnnotations   = MTL.lift . qReifyAnnotations
+  qReifyModule        = MTL.lift . qReifyModule
+  qAddTopDecls        = MTL.lift . qAddTopDecls
+  qAddModFinalizer    = MTL.lift . qAddModFinalizer
+  qGetQ               = MTL.lift qGetQ
+  qPutQ               = MTL.lift . qPutQ
+# endif
+#elif MIN_VERSION_template_haskell(2,5,0)
+  qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
 
 instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
-  qNewName          = MTL.lift . qNewName
-  qReport a b       = MTL.lift $ qReport a b
-  qRecover m1 m2    = WriterT $ runWriterT m1 `qRecover` runWriterT m2
-  qReify            = MTL.lift . qReify
-  qLocation         = MTL.lift qLocation
-  qRunIO            = MTL.lift . qRunIO
+  qNewName            = MTL.lift . qNewName
+  qReport a b         = MTL.lift $ qReport a b
+  qRecover m1 m2      = WriterT $ runWriterT m1 `qRecover` runWriterT m2
+  qReify              = MTL.lift . qReify
+  qLocation           = MTL.lift qLocation
+  qRunIO              = MTL.lift . qRunIO
 #if MIN_VERSION_template_haskell(2,7,0)
   qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
-  qAddDependentFile = MTL.lift . qAddDependentFile
-#if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles       = MTL.lift . qReifyRoles
-  qReifyAnnotations = MTL.lift . qReifyAnnotations
-  qReifyModule      = MTL.lift . qReifyModule
-  qAddTopDecls      = MTL.lift . qAddTopDecls
-  qAddModFinalizer  = MTL.lift . qAddModFinalizer
-  qGetQ             = MTL.lift qGetQ
-  qPutQ             = MTL.lift . qPutQ
-#endif
+  qLookupName a b     = MTL.lift $ qLookupName a b
+  qAddDependentFile   = MTL.lift . qAddDependentFile
+# if MIN_VERSION_template_haskell(2,9,0)
+  qReifyRoles         = MTL.lift . qReifyRoles
+  qReifyAnnotations   = MTL.lift . qReifyAnnotations
+  qReifyModule        = MTL.lift . qReifyModule
+  qAddTopDecls        = MTL.lift . qAddTopDecls
+  qAddModFinalizer    = MTL.lift . qAddModFinalizer
+  qGetQ               = MTL.lift qGetQ
+  qPutQ               = MTL.lift . qPutQ
+# endif
+#elif MIN_VERSION_template_haskell(2,5,0)
+  qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
 
 instance Quasi m => Quasi (StateT s m) where
-  qNewName          = MTL.lift . qNewName
-  qReport a b       = MTL.lift $ qReport a b
-  qRecover m1 m2    = StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s
-  qReify            = MTL.lift . qReify
-  qLocation         = MTL.lift qLocation
-  qRunIO            = MTL.lift . qRunIO
+  qNewName            = MTL.lift . qNewName
+  qReport a b         = MTL.lift $ qReport a b
+  qRecover m1 m2      = StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s
+  qReify              = MTL.lift . qReify
+  qLocation           = MTL.lift qLocation
+  qRunIO              = MTL.lift . qRunIO
 #if MIN_VERSION_template_haskell(2,7,0)
   qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
-  qAddDependentFile = MTL.lift . qAddDependentFile
-#if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles       = MTL.lift . qReifyRoles
-  qReifyAnnotations = MTL.lift . qReifyAnnotations
-  qReifyModule      = MTL.lift . qReifyModule
-  qAddTopDecls      = MTL.lift . qAddTopDecls
-  qAddModFinalizer  = MTL.lift . qAddModFinalizer
-  qGetQ             = MTL.lift qGetQ
-  qPutQ             = MTL.lift . qPutQ
-#endif
+  qLookupName a b     = MTL.lift $ qLookupName a b
+  qAddDependentFile   = MTL.lift . qAddDependentFile
+# if MIN_VERSION_template_haskell(2,9,0)
+  qReifyRoles         = MTL.lift . qReifyRoles
+  qReifyAnnotations   = MTL.lift . qReifyAnnotations
+  qReifyModule        = MTL.lift . qReifyModule
+  qAddTopDecls        = MTL.lift . qAddTopDecls
+  qAddModFinalizer    = MTL.lift . qAddModFinalizer
+  qGetQ               = MTL.lift qGetQ
+  qPutQ               = MTL.lift . qPutQ
+# endif
+#elif MIN_VERSION_template_haskell(2,5,0)
+  qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
 
 instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
-  qNewName          = MTL.lift . qNewName
-  qReport a b       = MTL.lift $ qReport a b
-  qRecover m1 m2    = RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s
-  qReify            = MTL.lift . qReify
-  qLocation         = MTL.lift qLocation
-  qRunIO            = MTL.lift . qRunIO
+  qNewName            = MTL.lift . qNewName
+  qReport a b         = MTL.lift $ qReport a b
+  qRecover m1 m2      = RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s
+  qReify              = MTL.lift . qReify
+  qLocation           = MTL.lift qLocation
+  qRunIO              = MTL.lift . qRunIO
 #if MIN_VERSION_template_haskell(2,7,0)
   qReifyInstances a b = MTL.lift $ qReifyInstances a b
-  qLookupName a b   = MTL.lift $ qLookupName a b
-  qAddDependentFile = MTL.lift . qAddDependentFile
-#if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles       = MTL.lift . qReifyRoles
-  qReifyAnnotations = MTL.lift . qReifyAnnotations
-  qReifyModule      = MTL.lift . qReifyModule
-  qAddTopDecls      = MTL.lift . qAddTopDecls
-  qAddModFinalizer  = MTL.lift . qAddModFinalizer
-  qGetQ             = MTL.lift qGetQ
-  qPutQ             = MTL.lift . qPutQ
-#endif
+  qLookupName a b     = MTL.lift $ qLookupName a b
+  qAddDependentFile   = MTL.lift . qAddDependentFile
+# if MIN_VERSION_template_haskell(2,9,0)
+  qReifyRoles         = MTL.lift . qReifyRoles
+  qReifyAnnotations   = MTL.lift . qReifyAnnotations
+  qReifyModule        = MTL.lift . qReifyModule
+  qAddTopDecls        = MTL.lift . qAddTopDecls
+  qAddModFinalizer    = MTL.lift . qAddModFinalizer
+  qGetQ               = MTL.lift qGetQ
+  qPutQ               = MTL.lift . qPutQ
+# endif
+#elif MIN_VERSION_template_haskell(2,5,0)
+  qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
 
 #if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
