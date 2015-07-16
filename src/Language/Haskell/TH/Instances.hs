@@ -92,7 +92,7 @@ import Data.Word (Word)
 import Data.Data hiding (Fixity(..))
 # endif
 
-# if defined(LANGUAGE_DeriveGeneric)
+# if __GLASGOW_HASKELL__ > 702
 import GHC.Generics (Generic)
 # else
 import qualified Generics.Deriving.TH as Generic (deriveAll)

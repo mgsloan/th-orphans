@@ -19,13 +19,16 @@ description:        Orphan instances for TH datatypes.  In particular, instances
 
 library
   build-depends:    base >= 4.2 && < 5,
-                    generic-deriving >= 1.8,
                     nats >= 0.1 && < 2,
                     template-haskell,
                     -- https://github.com/mboes/th-lift/issues/14
                     th-lift >= 0.7.1,
                     th-reify-many >= 0.1 && < 0.2,
                     mtl
+
+  -- Use TH to derive Generics instances instead of DeriveGeneric, for < 7.4
+  if impl(ghc < 7.4)
+    build-depends:  generic-deriving >= 1.8
 
   -- Prior to GHC 7.6, GHC generics lived in ghc-prim
   if impl(ghc >= 7.2) && impl(ghc < 7.6)
