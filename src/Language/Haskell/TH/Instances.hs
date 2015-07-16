@@ -11,6 +11,8 @@
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 704
 # define LANGUAGE_DeriveGeneric
 {-# LANGUAGE DeriveGeneric #-}
+#else
+{-# LANGUAGE TypeFamilies #-}
 #endif
 
 {-# OPTIONS_GHC -fno-warn-deprecations #-}
@@ -92,6 +94,8 @@ import Data.Data hiding (Fixity(..))
 
 # if defined(LANGUAGE_DeriveGeneric)
 import GHC.Generics (Generic)
+# else
+import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
@@ -196,6 +200,29 @@ deriving instance Generic Safety
 deriving instance Generic Stmt
 deriving instance Generic Strict
 deriving instance Generic Type
+# else
+$(Generic.deriveAll ''Body)
+$(Generic.deriveAll ''Callconv)
+$(Generic.deriveAll ''Clause)
+$(Generic.deriveAll ''Con)
+$(Generic.deriveAll ''Dec)
+$(Generic.deriveAll ''Exp)
+$(Generic.deriveAll ''Fixity)
+$(Generic.deriveAll ''FixityDirection)
+$(Generic.deriveAll ''Foreign)
+$(Generic.deriveAll ''FunDep)
+$(Generic.deriveAll ''Guard)
+$(Generic.deriveAll ''Info)
+$(Generic.deriveAll ''Lit)
+$(Generic.deriveAll ''Match)
+$(Generic.deriveAll ''Name)
+$(Generic.deriveAll ''NameSpace)
+$(Generic.deriveAll ''Pat)
+$(Generic.deriveAll ''Range)
+$(Generic.deriveAll ''Safety)
+$(Generic.deriveAll ''Stmt)
+$(Generic.deriveAll ''Strict)
+$(Generic.deriveAll ''Type)
 # endif
 
 # if MIN_VERSION_template_haskell(2,3,0)
@@ -222,6 +249,8 @@ deriving instance Typeable QuasiQuoter
 
 #  if defined(LANGUAGE_DeriveGeneric)
 deriving instance Generic Loc
+#  else
+$(Generic.deriveAll ''Loc)
 #  endif
 # endif
 
@@ -239,6 +268,14 @@ deriving instance Generic PkgName
 deriving instance Generic Pragma
 deriving instance Generic Pred
 deriving instance Generic TyVarBndr
+#  else
+$(Generic.deriveAll ''FamFlavour)
+$(Generic.deriveAll ''ModName)
+$(Generic.deriveAll ''OccName)
+$(Generic.deriveAll ''PkgName)
+$(Generic.deriveAll ''Pragma)
+$(Generic.deriveAll ''Pred)
+$(Generic.deriveAll ''TyVarBndr)
 #  endif
 
 #  if !(MIN_VERSION_template_haskell(2,8,0))
@@ -248,6 +285,9 @@ deriving instance Ord Kind
 #   if defined(LANGUAGE_DeriveGeneric)
 deriving instance Generic InlineSpec
 deriving instance Generic Kind
+#   else
+$(Generic.deriveAll ''InlineSpec)
+$(Generic.deriveAll ''Kind)
 #   endif
 #  endif
 # endif
@@ -258,6 +298,8 @@ deriving instance Ord ClassInstance
 
 #  if defined(LANGUAGE_DeriveGeneric)
 deriving instance Generic ClassInstance
+#  else
+$(Generic.deriveAll ''ClassInstance)
 #  endif
 # endif
 
@@ -280,6 +322,12 @@ deriving instance Generic Phases
 deriving instance Generic RuleBndr
 deriving instance Generic RuleMatch
 deriving instance Generic TyLit
+#  else
+$(Generic.deriveAll ''Inline)
+$(Generic.deriveAll ''Phases)
+$(Generic.deriveAll ''RuleBndr)
+$(Generic.deriveAll ''RuleMatch)
+$(Generic.deriveAll ''TyLit)
 #  endif
 # endif
 
@@ -303,6 +351,13 @@ deriving instance Generic Module
 deriving instance Generic ModuleInfo
 deriving instance Generic Role
 deriving instance Generic TySynEqn
+#  else
+$(Generic.deriveAll ''AnnLookup)
+$(Generic.deriveAll ''AnnTarget)
+$(Generic.deriveAll ''Module)
+$(Generic.deriveAll ''ModuleInfo)
+$(Generic.deriveAll ''Role)
+$(Generic.deriveAll ''TySynEqn)
 #  endif
 # else
 deriving instance Show ModName
