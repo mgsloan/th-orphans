@@ -66,7 +66,6 @@ import qualified Control.Monad.Trans as MTL (lift)
 #if !MIN_VERSION_template_haskell(2,10,0)
 import Data.Int (Int8, Int16, Int32, Int64)
 import Data.Word (Word8, Word16, Word32, Word64)
-import Numeric.Natural (Natural)
 
 import Language.Haskell.TH.Ppr
 # if MIN_VERSION_template_haskell(2,3,0)
@@ -137,9 +136,6 @@ instance Lift Word32 where
     lift x = return (LitE (IntegerL (fromIntegral x)))
 
 instance Lift Word64 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Natural where
     lift x = return (LitE (IntegerL (fromIntegral x)))
 
 instance Lift Float where
