@@ -19,7 +19,7 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 -- |
--- Module      :  Language.Haskell.TH.Instances.Lift
+-- Module      :  Language.Haskell.TH.Instances
 -- Copyright   :  (c) Matt Morrow 2008
 -- License     :  BSD3
 -- Maintainer  :  Michael Sloan <mgsloan at gmail>
