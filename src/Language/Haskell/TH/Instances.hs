@@ -47,6 +47,10 @@
 -- Note that the 'Ord' instances are not guaranteed to produce
 -- consistent results across template-haskell / GHC versions, as they
 -- have different data types, with different constructor orders.
+--
+-- This module also implicitly re-exports the instances defined in
+-- "Instances.TH.Lift". This is mostly to ensure that there aren't
+-- collisions of orphans between @th-orphans@ and @th-lift-instances@.
 module Language.Haskell.TH.Instances () where
 
 import Language.Haskell.TH
@@ -60,6 +64,7 @@ import Control.Monad.RWS (RWST(RWST), runRWST)
 import Control.Monad.State (StateT(StateT), runStateT)
 import Control.Monad.Writer (WriterT(WriterT), runWriterT)
 import qualified Control.Monad.Trans as MTL (lift)
+import Instances.TH.Lift ()
 
 -- Thanks to Richard Eisenberg, GHC 7.10 adds many of the instances
 -- from this module.
@@ -109,40 +114,6 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 #if !MIN_VERSION_template_haskell(2,10,0)
 instance Ppr Lit where
     ppr = pprLit noPrec
-
--- This follows the pattern of the Lift instances for Int / Integer.
-instance Lift Int8 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Int16 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Int32 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Int64 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Word where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Word8 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Word16 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Word32 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Word64 where
-    lift x = return (LitE (IntegerL (fromIntegral x)))
-
-instance Lift Float where
-    lift x = return (LitE (RationalL (toRational x)))
-
-instance Lift Double where
-    lift x = return (LitE (RationalL (toRational x)))
 
 deriving instance Eq Info
 
