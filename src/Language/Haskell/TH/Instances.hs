@@ -103,6 +103,11 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
+#if !MIN_VERSION_template_haskell(2,11,0)
+deriving instance Show NameFlavour
+deriving instance Show NameSpace
+#endif
+
 -- Ideally, it'd be possible to use reifyManyWithoutInstances for
 -- these Ord instances, but TH can't output deriving instances (and
 -- even if this is added for later versions, we need to support many
@@ -360,6 +365,12 @@ instance Quasi m => Quasi (ReaderT r m) where
   qGetQ               = MTL.lift qGetQ
   qPutQ               = MTL.lift . qPutQ
 # endif
+# if MIN_VERSION_template_haskell(2,11,0)
+  qReifyFixity        = MTL.lift . qReifyFixity
+  qReifyConStrictness = MTL.lift . qReifyConStrictness
+  qIsExtEnabled       = MTL.lift . qIsExtEnabled
+  qExtsEnabled        = MTL.lift qExtsEnabled
+# endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
@@ -383,6 +394,12 @@ instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
   qAddModFinalizer    = MTL.lift . qAddModFinalizer
   qGetQ               = MTL.lift qGetQ
   qPutQ               = MTL.lift . qPutQ
+# endif
+# if MIN_VERSION_template_haskell(2,11,0)
+  qReifyFixity        = MTL.lift . qReifyFixity
+  qReifyConStrictness = MTL.lift . qReifyConStrictness
+  qIsExtEnabled       = MTL.lift . qIsExtEnabled
+  qExtsEnabled        = MTL.lift qExtsEnabled
 # endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
@@ -408,6 +425,12 @@ instance Quasi m => Quasi (StateT s m) where
   qGetQ               = MTL.lift qGetQ
   qPutQ               = MTL.lift . qPutQ
 # endif
+# if MIN_VERSION_template_haskell(2,11,0)
+  qReifyFixity        = MTL.lift . qReifyFixity
+  qReifyConStrictness = MTL.lift . qReifyConStrictness
+  qIsExtEnabled       = MTL.lift . qIsExtEnabled
+  qExtsEnabled        = MTL.lift qExtsEnabled
+# endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
@@ -431,6 +454,12 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qAddModFinalizer    = MTL.lift . qAddModFinalizer
   qGetQ               = MTL.lift qGetQ
   qPutQ               = MTL.lift . qPutQ
+# endif
+# if MIN_VERSION_template_haskell(2,11,0)
+  qReifyFixity        = MTL.lift . qReifyFixity
+  qReifyConStrictness = MTL.lift . qReifyConStrictness
+  qIsExtEnabled       = MTL.lift . qIsExtEnabled
+  qExtsEnabled        = MTL.lift qExtsEnabled
 # endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
