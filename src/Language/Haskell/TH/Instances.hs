@@ -1,7 +1,8 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE TypeFamilies #-}
 
 #if defined(__GLASGOW_HASKELL__)
 # define LANGUAGE_DeriveDataTypeable
@@ -11,8 +12,10 @@
 #if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 704
 # define LANGUAGE_DeriveGeneric
 {-# LANGUAGE DeriveGeneric #-}
-#else
-{-# LANGUAGE TypeFamilies #-}
+#endif
+
+#if defined(__GLASGOW_HASKELL__) && __GLASGOW_HASKELL__ >= 706
+{-# LANGUAGE DataKinds #-}
 #endif
 
 {-# OPTIONS_GHC -fno-warn-deprecations #-}
@@ -98,7 +101,9 @@ import Data.Data hiding (Fixity(..))
 
 # if __GLASGOW_HASKELL__ > 702
 import GHC.Generics (Generic)
-# else
+# endif
+
+# if __GLASGOW_HASKELL__ <= 702 || !(MIN_VERSION_template_haskell(2,10,0))
 import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
@@ -196,6 +201,11 @@ $(Generic.deriveAll ''Stmt)
 $(Generic.deriveAll ''Strict)
 $(Generic.deriveAll ''Type)
 # endif
+
+-- Unconditionally use Template Haskell to derive this Generic instance, since
+-- NameFlavour has fields with unboxed types (for which deriving Generic
+-- support wasn't added to GHC until 8.0).
+$(Generic.deriveAll ''NameFlavour)
 
 # if MIN_VERSION_template_haskell(2,3,0)
 instance Ppr Loc where
