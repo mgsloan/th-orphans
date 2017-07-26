@@ -384,6 +384,9 @@ instance Quasi m => Quasi (ReaderT r m) where
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
+#if MIN_VERSION_template_haskell(2,12,0)
+  qAddForeignFile a b = MTL.lift $ qAddForeignFile a b
+#endif
 
 instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
   qNewName            = MTL.lift . qNewName
@@ -413,6 +416,9 @@ instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
 # endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
+#endif
+#if MIN_VERSION_template_haskell(2,12,0)
+  qAddForeignFile a b = MTL.lift $ qAddForeignFile a b
 #endif
 
 instance Quasi m => Quasi (StateT s m) where
@@ -444,6 +450,9 @@ instance Quasi m => Quasi (StateT s m) where
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
 #endif
+#if MIN_VERSION_template_haskell(2,12,0)
+  qAddForeignFile a b = MTL.lift $ qAddForeignFile a b
+#endif
 
 instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
   qNewName            = MTL.lift . qNewName
@@ -473,6 +482,9 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
 # endif
 #elif MIN_VERSION_template_haskell(2,5,0)
   qClassInstances a b = MTL.lift $ qClassInstances a b
+#endif
+#if MIN_VERSION_template_haskell(2,12,0)
+  qAddForeignFile a b = MTL.lift $ qAddForeignFile a b
 #endif
 
 #if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
