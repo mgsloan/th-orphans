@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.5 [2018.01.18]
 * Implement `qAddCorePlugin` for `Quasi` instances
 
 ### 0.13.4 [2017.07.26]
