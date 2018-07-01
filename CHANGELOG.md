@@ -1,3 +1,7 @@
+### next [????.??.??]
+* Allow building with `template-haskell-2.14`.
+* Implement `qAddForeignFilePath` and `qAddTempFile` for `Quasi` instances
+
 ### 0.13.5 [2018.01.18]
 * Implement `qAddCorePlugin` for `Quasi` instances
 
