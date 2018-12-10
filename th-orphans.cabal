@@ -19,7 +19,7 @@ tested-with:        GHC == 7.0.4
                   , GHC == 8.0.2
                   , GHC == 8.2.2
                   , GHC == 8.4.4
-                  , GHC == 8.6.2
+                  , GHC == 8.6.3
 synopsis:           Orphan instances for TH datatypes
 description:        Orphan instances for TH datatypes.  In particular, instances
                     for Ord and Lift, as well as a few missing Show / Eq.  These
