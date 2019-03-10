@@ -1,10 +1,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
+import Control.Exception (evaluate)
 import Language.Haskell.TH
 import Language.Haskell.TH.Instances
 import Language.Haskell.TH.Lift
 import System.Timeout
-import Test.Hspec
+import System.Mem
+import Test.Hspec hiding (runIO)
 import TestUtil
 import qualified Data.ByteString as BS
 
@@ -23,6 +25,13 @@ main = hspec $ do
         compare (AppT (ConT ''Maybe) (ConT ''Int)) (AppT (ConT ''Maybe) (ConT ''Char))
             `shouldBe` GT
     it "Lifts bytes" $ do
-        let addr = $(pure $(lift (LitE (BytesPrimL (bsToBytes testBytes)))))
+        let addr = $(do
+                let result = $(do
+                        ast <- lift (LitE (BytesPrimL (bsToBytes testBytes)))
+                        runIO performMajorGC
+                        return ast)
+                runIO $ evaluate result
+                runIO performMajorGC
+                return result)
         bs <- addrToBs addr (BS.length testBytes)
         bs `shouldBe` testBytes
