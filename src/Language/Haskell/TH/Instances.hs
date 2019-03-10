@@ -108,6 +108,12 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
+#if MIN_VERSION_template_haskell(2,15,0)
+import GHC.Ptr (Ptr(Ptr))
+import GHC.ForeignPtr (newForeignPtr_)
+import System.IO.Unsafe (unsafePerformIO)
+#endif
+
 #if !MIN_VERSION_template_haskell(2,11,0)
 deriving instance Show NameFlavour
 deriving instance Show NameSpace
@@ -515,6 +521,19 @@ instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
 deriving instance Typeable Lift
 deriving instance Typeable Ppr
 deriving instance Typeable Quasi
+#endif
+
+#if MIN_VERSION_template_haskell(2,15,0)
+instance Lift Bytes where
+  lift bytes =
+    [| Bytes
+      { bytesPtr = unsafePerformIO $ newForeignPtr_ (Ptr $(litE (BytesPrimL bytes)))
+      , bytesOffset = 0
+      , bytesSize = size
+      }
+    |]
+    where
+      size = bytesSize bytes
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=

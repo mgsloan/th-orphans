@@ -2,8 +2,11 @@
 
 import Language.Haskell.TH
 import Language.Haskell.TH.Instances
+import Language.Haskell.TH.Lift
 import System.Timeout
 import Test.Hspec
+import TestUtil
+import qualified Data.ByteString as BS
 
 main :: IO ()
 main = hspec $ do
@@ -19,3 +22,7 @@ main = hspec $ do
     it "Compares types correctly" $
         compare (AppT (ConT ''Maybe) (ConT ''Int)) (AppT (ConT ''Maybe) (ConT ''Char))
             `shouldBe` GT
+    it "Lifts bytes" $ do
+        let addr = $(pure $(lift (LitE (BytesPrimL (bsToBytes testBytes)))))
+        bs <- addrToBs addr (BS.length testBytes)
+        bs `shouldBe` testBytes
