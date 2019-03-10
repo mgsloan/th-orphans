@@ -11,7 +11,11 @@ import GHC.ForeignPtr (newForeignPtr_)
 import GHC.Ptr (Ptr(Ptr))
 
 testBytes :: BS.ByteString
-testBytes = "test bytes"
+testBytes =
+  "test bytes " <>
+  (BS.take (len - 2) $ BS.drop 1 $ BS.replicate len 42)
+  where
+    len = 20 * 1024 * 1024
 
 bsToBytes :: BS.ByteString -> Bytes
 bsToBytes bs =
