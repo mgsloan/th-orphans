@@ -1,7 +1,10 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE MagicHash #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module TestUtil where
+
+#if __GLASGOW_HASKELL__ >= 809
 
 import Language.Haskell.TH.Syntax
 import qualified Data.ByteString as BS
@@ -31,3 +34,5 @@ addrToBs :: Addr# -> Int -> IO BS.ByteString
 addrToBs addr len = do
   fp <- newForeignPtr_ (Ptr addr)
   return $ BS.fromForeignPtr fp 0 len
+
+#endif

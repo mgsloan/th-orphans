@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 import Control.Exception (evaluate)
@@ -24,6 +25,7 @@ main = hspec $ do
     it "Compares types correctly" $
         compare (AppT (ConT ''Maybe) (ConT ''Int)) (AppT (ConT ''Maybe) (ConT ''Char))
             `shouldBe` GT
+#if __GLASGOW_HASKELL__ >= 809
     it "Lifts bytes" $ do
         let addr = $(do
                 let result = $(do
@@ -35,3 +37,4 @@ main = hspec $ do
                 return result)
         bs <- addrToBs addr (BS.length testBytes)
         bs `shouldBe` testBytes
+#endif

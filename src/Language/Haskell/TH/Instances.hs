@@ -108,7 +108,12 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
-#if MIN_VERSION_template_haskell(2,15,0)
+-- TODO: Once it's released this should probably be.  Other related
+-- usages of this #if should be replaced as well (and do not have a
+-- TODO like this).
+--
+-- #if MIN_VERSION_template_haskell(2,16,0)
+#if __GLASGOW_HASKELL__ >= 809
 import GHC.Ptr (Ptr(Ptr))
 import GHC.ForeignPtr (newForeignPtr_)
 import System.IO.Unsafe (unsafePerformIO)
@@ -523,7 +528,7 @@ deriving instance Typeable Ppr
 deriving instance Typeable Quasi
 #endif
 
-#if MIN_VERSION_template_haskell(2,15,0)
+#if __GLASGOW_HASKELL__ >= 809
 instance Lift Bytes where
   lift bytes =
     [| Bytes
