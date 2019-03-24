@@ -1,5 +1,6 @@
 ### Not yet released
-* Allow building with `template-haskell-2.15` by manually implementing
+* Backport the `MonadFail Q` instance.
+* Allow building with `template-haskell-2.16` by manually implementing
   `Lift` for `Bytes`. See [#27]
 
 [#27]: https://github.com/mgsloan/th-orphans/issues/27

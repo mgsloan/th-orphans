@@ -1,4 +1,5 @@
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE TemplateHaskell #-}
@@ -69,6 +70,10 @@ import Control.Monad.Writer (WriterT(WriterT), runWriterT)
 import qualified Control.Monad.Trans as MTL (lift)
 import Instances.TH.Lift ()
 
+#if !(MIN_VERSION_template_haskell(2,8,0))
+import Unsafe.Coerce (unsafeCoerce)
+#endif
+
 -- Thanks to Richard Eisenberg, GHC 7.10 adds many of the instances
 -- from this module.
 #if !MIN_VERSION_template_haskell(2,10,0)
@@ -108,6 +113,10 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
+#if !(MIN_VERSION_template_haskell(2,11,0))
+import qualified Control.Monad.Fail as Fail
+#endif
+
 -- TODO: Once it's released this should probably be.  Other related
 -- usages of this #if should be replaced as well (and do not have a
 -- TODO like this).
@@ -122,6 +131,18 @@ import System.IO.Unsafe (unsafePerformIO)
 #if !MIN_VERSION_template_haskell(2,11,0)
 deriving instance Show NameFlavour
 deriving instance Show NameSpace
+
+instance Fail.MonadFail Q where
+  fail s = report True s >> q (fail "Q monad failure")
+    where
+      q :: (forall m. Quasi m => m a) -> Q a
+# if MIN_VERSION_template_haskell(2,8,0)
+      q = Q
+# else
+      -- Early versions of template-haskell did not expose Q's newtype
+      -- constructor. Desperate times call for desperate measures.
+      q = unsafeCoerce
+# endif
 #endif
 
 -- Ideally, it'd be possible to use reifyManyWithoutInstances for
