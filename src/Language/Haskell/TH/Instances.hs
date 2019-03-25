@@ -108,9 +108,9 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 # endif
 #endif
 
--- TODO: Once it's released this should probably be.  Other related
--- usages of this #if should be replaced as well (and do not have a
--- TODO like this).
+-- TODO: Once GHC 8.10 is released, this should be updated to use the
+-- proper template haskell version.  Other related usages of this #if
+-- should be replaced as well (and do not have a TODO like this).
 --
 -- #if MIN_VERSION_template_haskell(2,16,0)
 #if __GLASGOW_HASKELL__ >= 809
