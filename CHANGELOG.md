@@ -1,4 +1,4 @@
-### Not yet released
+### 0.13.7 [2019.03.24]
 * Backport the `MonadFail Q` instance.
 * Allow building with `template-haskell-2.16` by manually implementing
   `Lift` for `Bytes`. See [#27]
