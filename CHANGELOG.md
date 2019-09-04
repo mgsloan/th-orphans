@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.8 [2019.09.04]
 * Backport the `Bounded` instance for `Extension`
   (from `Language.Haskell.TH.LanguageExtensions`), which was introduced in
   `template-haskell-2.15.0.0`.
