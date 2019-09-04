@@ -1,3 +1,8 @@
+### next [????.??.??]
+* Backport the `Bounded` instance for `Extension`
+  (from `Language.Haskell.TH.LanguageExtensions`), which was introduced in
+  `template-haskell-2.15.0.0`.
+
 ### 0.13.7 [2019.03.24]
 * Backport the `MonadFail Q` instance.
 * Allow building with `template-haskell-2.16` by manually implementing

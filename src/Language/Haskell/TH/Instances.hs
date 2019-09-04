@@ -74,6 +74,10 @@ import Instances.TH.Lift ()
 import Unsafe.Coerce (unsafeCoerce)
 #endif
 
+#if MIN_VERSION_template_haskell(2,11,0) && !(MIN_VERSION_template_haskell(2,15,0))
+import Language.Haskell.TH.LanguageExtensions (Extension(..))
+#endif
+
 -- Thanks to Richard Eisenberg, GHC 7.10 adds many of the instances
 -- from this module.
 #if !MIN_VERSION_template_haskell(2,10,0)
@@ -385,6 +389,10 @@ instance Applicative PprM where
     pure  = return
     (<*>) = ap
 # endif
+#endif
+
+#if MIN_VERSION_template_haskell(2,11,0) && !(MIN_VERSION_template_haskell(2,15,0))
+deriving instance Bounded Extension
 #endif
 
 instance Quasi m => Quasi (ReaderT r m) where
