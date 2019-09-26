@@ -51,6 +51,7 @@ library
   hs-source-dirs:     src
   ghc-options:        -Wall
   exposed-modules:    Language.Haskell.TH.Instances
+  other-modules:      Language.Haskell.TH.Instances.Internal
   default-language:   Haskell2010
 
 test-suite test

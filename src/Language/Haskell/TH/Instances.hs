@@ -58,6 +58,7 @@
 module Language.Haskell.TH.Instances () where
 
 import Language.Haskell.TH
+import Language.Haskell.TH.Instances.Internal
 import Language.Haskell.TH.Lift (deriveLiftMany)
 import Language.Haskell.TH.ReifyMany
 import Language.Haskell.TH.Syntax
@@ -67,7 +68,6 @@ import Control.Monad.Reader (ReaderT(ReaderT), runReaderT)
 import Control.Monad.RWS (RWST(RWST), runRWST)
 import Control.Monad.State (StateT(StateT), runStateT)
 import Control.Monad.Writer (WriterT(WriterT), runWriterT)
-import qualified Control.Monad.Trans as MTL (lift)
 import Instances.TH.Lift ()
 
 #if !(MIN_VERSION_template_haskell(2,8,0))
@@ -395,161 +395,21 @@ instance Applicative PprM where
 deriving instance Bounded Extension
 #endif
 
-instance Quasi m => Quasi (ReaderT r m) where
-  qNewName                = MTL.lift . qNewName
-  qReport a b             = MTL.lift $ qReport a b
-  qRecover m1 m2          = ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r
-  qReify                  = MTL.lift . qReify
-  qLocation               = MTL.lift qLocation
-  qRunIO                  = MTL.lift . qRunIO
-#if MIN_VERSION_template_haskell(2,7,0)
-  qReifyInstances a b     = MTL.lift $ qReifyInstances a b
-  qLookupName a b         = MTL.lift $ qLookupName a b
-  qAddDependentFile       = MTL.lift . qAddDependentFile
-# if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles             = MTL.lift . qReifyRoles
-  qReifyAnnotations       = MTL.lift . qReifyAnnotations
-  qReifyModule            = MTL.lift . qReifyModule
-  qAddTopDecls            = MTL.lift . qAddTopDecls
-  qAddModFinalizer        = MTL.lift . qAddModFinalizer
-  qGetQ                   = MTL.lift qGetQ
-  qPutQ                   = MTL.lift . qPutQ
-# endif
-# if MIN_VERSION_template_haskell(2,11,0)
-  qReifyFixity            = MTL.lift . qReifyFixity
-  qReifyConStrictness     = MTL.lift . qReifyConStrictness
-  qIsExtEnabled           = MTL.lift . qIsExtEnabled
-  qExtsEnabled            = MTL.lift qExtsEnabled
-# endif
-#elif MIN_VERSION_template_haskell(2,5,0)
-  qClassInstances a b     = MTL.lift $ qClassInstances a b
-#endif
-#if MIN_VERSION_template_haskell(2,14,0)
-  qAddForeignFilePath a b = MTL.lift $ qAddForeignFilePath a b
-  qAddTempFile            = MTL.lift . qAddTempFile
-#elif MIN_VERSION_template_haskell(2,12,0)
-  qAddForeignFile a b     = MTL.lift $ qAddForeignFile a b
-#endif
-#if MIN_VERSION_template_haskell(2,13,0)
-  qAddCorePlugin          = MTL.lift . qAddCorePlugin
-#endif
+$(deriveQuasiTrans
+    [t| forall r m. Quasi m => Proxy2 (ReaderT r m) |]
+    [e| \m1 m2 -> ReaderT $ \ r -> runReaderT m1 r `qRecover` runReaderT m2 r |])
 
-instance (Quasi m, Monoid w) => Quasi (WriterT w m) where
-  qNewName                = MTL.lift . qNewName
-  qReport a b             = MTL.lift $ qReport a b
-  qRecover m1 m2          = WriterT $ runWriterT m1 `qRecover` runWriterT m2
-  qReify                  = MTL.lift . qReify
-  qLocation               = MTL.lift qLocation
-  qRunIO                  = MTL.lift . qRunIO
-#if MIN_VERSION_template_haskell(2,7,0)
-  qReifyInstances a b     = MTL.lift $ qReifyInstances a b
-  qLookupName a b         = MTL.lift $ qLookupName a b
-  qAddDependentFile       = MTL.lift . qAddDependentFile
-# if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles             = MTL.lift . qReifyRoles
-  qReifyAnnotations       = MTL.lift . qReifyAnnotations
-  qReifyModule            = MTL.lift . qReifyModule
-  qAddTopDecls            = MTL.lift . qAddTopDecls
-  qAddModFinalizer        = MTL.lift . qAddModFinalizer
-  qGetQ                   = MTL.lift qGetQ
-  qPutQ                   = MTL.lift . qPutQ
-# endif
-# if MIN_VERSION_template_haskell(2,11,0)
-  qReifyFixity            = MTL.lift . qReifyFixity
-  qReifyConStrictness     = MTL.lift . qReifyConStrictness
-  qIsExtEnabled           = MTL.lift . qIsExtEnabled
-  qExtsEnabled            = MTL.lift qExtsEnabled
-# endif
-#elif MIN_VERSION_template_haskell(2,5,0)
-  qClassInstances a b     = MTL.lift $ qClassInstances a b
-#endif
-#if MIN_VERSION_template_haskell(2,14,0)
-  qAddForeignFilePath a b = MTL.lift $ qAddForeignFilePath a b
-  qAddTempFile            = MTL.lift . qAddTempFile
-#elif MIN_VERSION_template_haskell(2,12,0)
-  qAddForeignFile a b     = MTL.lift $ qAddForeignFile a b
-#endif
-#if MIN_VERSION_template_haskell(2,13,0)
-  qAddCorePlugin          = MTL.lift . qAddCorePlugin
-#endif
+$(deriveQuasiTrans
+    [t| forall w m. (Quasi m, Monoid w) => Proxy2 (WriterT w m) |]
+    [e| \m1 m2 -> WriterT $ runWriterT m1 `qRecover` runWriterT m2 |])
 
-instance Quasi m => Quasi (StateT s m) where
-  qNewName                = MTL.lift . qNewName
-  qReport a b             = MTL.lift $ qReport a b
-  qRecover m1 m2          = StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s
-  qReify                  = MTL.lift . qReify
-  qLocation               = MTL.lift qLocation
-  qRunIO                  = MTL.lift . qRunIO
-#if MIN_VERSION_template_haskell(2,7,0)
-  qReifyInstances a b     = MTL.lift $ qReifyInstances a b
-  qLookupName a b         = MTL.lift $ qLookupName a b
-  qAddDependentFile       = MTL.lift . qAddDependentFile
-# if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles             = MTL.lift . qReifyRoles
-  qReifyAnnotations       = MTL.lift . qReifyAnnotations
-  qReifyModule            = MTL.lift . qReifyModule
-  qAddTopDecls            = MTL.lift . qAddTopDecls
-  qAddModFinalizer        = MTL.lift . qAddModFinalizer
-  qGetQ                   = MTL.lift qGetQ
-  qPutQ                   = MTL.lift . qPutQ
-# endif
-# if MIN_VERSION_template_haskell(2,11,0)
-  qReifyFixity            = MTL.lift . qReifyFixity
-  qReifyConStrictness     = MTL.lift . qReifyConStrictness
-  qIsExtEnabled           = MTL.lift . qIsExtEnabled
-  qExtsEnabled            = MTL.lift qExtsEnabled
-# endif
-#elif MIN_VERSION_template_haskell(2,5,0)
-  qClassInstances a b     = MTL.lift $ qClassInstances a b
-#endif
-#if MIN_VERSION_template_haskell(2,14,0)
-  qAddForeignFilePath a b = MTL.lift $ qAddForeignFilePath a b
-  qAddTempFile            = MTL.lift . qAddTempFile
-#elif MIN_VERSION_template_haskell(2,12,0)
-  qAddForeignFile a b     = MTL.lift $ qAddForeignFile a b
-#endif
-#if MIN_VERSION_template_haskell(2,13,0)
-  qAddCorePlugin          = MTL.lift . qAddCorePlugin
-#endif
+$(deriveQuasiTrans
+    [t| forall s m. Quasi m => Proxy2 (StateT s m) |]
+    [e| \m1 m2 -> StateT $ \ s -> runStateT m1 s `qRecover` runStateT m2 s |])
 
-instance (Quasi m, Monoid w) => Quasi (RWST r w s m) where
-  qNewName                = MTL.lift . qNewName
-  qReport a b             = MTL.lift $ qReport a b
-  qRecover m1 m2          = RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s
-  qReify                  = MTL.lift . qReify
-  qLocation               = MTL.lift qLocation
-  qRunIO                  = MTL.lift . qRunIO
-#if MIN_VERSION_template_haskell(2,7,0)
-  qReifyInstances a b     = MTL.lift $ qReifyInstances a b
-  qLookupName a b         = MTL.lift $ qLookupName a b
-  qAddDependentFile       = MTL.lift . qAddDependentFile
-# if MIN_VERSION_template_haskell(2,9,0)
-  qReifyRoles             = MTL.lift . qReifyRoles
-  qReifyAnnotations       = MTL.lift . qReifyAnnotations
-  qReifyModule            = MTL.lift . qReifyModule
-  qAddTopDecls            = MTL.lift . qAddTopDecls
-  qAddModFinalizer        = MTL.lift . qAddModFinalizer
-  qGetQ                   = MTL.lift qGetQ
-  qPutQ                   = MTL.lift . qPutQ
-# endif
-# if MIN_VERSION_template_haskell(2,11,0)
-  qReifyFixity            = MTL.lift . qReifyFixity
-  qReifyConStrictness     = MTL.lift . qReifyConStrictness
-  qIsExtEnabled           = MTL.lift . qIsExtEnabled
-  qExtsEnabled            = MTL.lift qExtsEnabled
-# endif
-#elif MIN_VERSION_template_haskell(2,5,0)
-  qClassInstances a b     = MTL.lift $ qClassInstances a b
-#endif
-#if MIN_VERSION_template_haskell(2,14,0)
-  qAddForeignFilePath a b = MTL.lift $ qAddForeignFilePath a b
-  qAddTempFile            = MTL.lift . qAddTempFile
-#elif MIN_VERSION_template_haskell(2,12,0)
-  qAddForeignFile a b     = MTL.lift $ qAddForeignFile a b
-#endif
-#if MIN_VERSION_template_haskell(2,13,0)
-  qAddCorePlugin          = MTL.lift . qAddCorePlugin
-#endif
+$(deriveQuasiTrans
+    [t| forall r w s m. (Quasi m, Monoid w) => Proxy2 (RWST r w s m) |]
+    [e| \m1 m2 -> RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s |])
 
 #if MIN_VERSION_base(4,7,0) && defined(LANGUAGE_DeriveDataTypeable) && __GLASGOW_HASKELL__ < 710
 deriving instance Typeable Lift
