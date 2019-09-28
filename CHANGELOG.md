@@ -1,3 +1,7 @@
+### next [????.??.??]
+* Implement `qReifyType` (introduced in `template-haskell-2.16.0.0`) for the
+  `Quasi` instances defined in `th-orphans`.
+
 ### 0.13.8 [2019.09.04]
 * Backport the `Bounded` instance for `Extension`
   (from `Language.Haskell.TH.LanguageExtensions`), which was introduced in
