@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.9 [2019.09.28]
 * Implement `qReifyType` (introduced in `template-haskell-2.16.0.0`) for the
   `Quasi` instances defined in `th-orphans`.
 
