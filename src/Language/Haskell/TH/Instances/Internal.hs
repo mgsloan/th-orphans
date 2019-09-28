@@ -84,6 +84,9 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
 #if MIN_VERSION_template_haskell(2,13,0)
             , ('qAddCorePlugin,      [| MTL.lift . qAddCorePlugin |])
 #endif
+#if MIN_VERSION_template_haskell(2,16,0)
+            , ('qReifyType,          [| MTL.lift . qReifyType |])
+#endif
             ]
 
           mkDec :: Name -> Q Exp -> Q Dec
