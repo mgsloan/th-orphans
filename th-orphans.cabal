@@ -5,9 +5,9 @@ build-type:         Simple
 license:            BSD3
 license-file:       LICENSE
 category:           Template Haskell
-author:             Matt Morrow
-copyright:          (c) Matt Morrow
-maintainer:         Michael Sloan <mgsloan at gmail>
+author:             Matt Morrow, Michael Sloan, Ryan Scott
+copyright:          (c) Matt Morrow, Michael Sloan, Ryan Scott
+maintainer:         Ryan Scott <ryan.gl.scott@gmail.com>
 bug-reports:        https://github.com/mgsloan/th-orphans/issues
 stability:          experimental
 tested-with:        GHC == 7.0.4
