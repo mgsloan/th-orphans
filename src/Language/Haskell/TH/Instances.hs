@@ -417,7 +417,7 @@ deriving instance Typeable Ppr
 deriving instance Typeable Quasi
 #endif
 
-#if __GLASGOW_HASKELL__ >= 809
+#if MIN_VERSION_template_haskell(2,16,0)
 instance Lift Bytes where
   lift bytes =
     [| Bytes
@@ -428,6 +428,7 @@ instance Lift Bytes where
     |]
     where
       size = bytesSize bytes
+  liftTyped = unsafeTExpCoerce . lift
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=
