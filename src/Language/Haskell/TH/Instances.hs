@@ -63,7 +63,6 @@ import Language.Haskell.TH.Lift (deriveLiftMany)
 import Language.Haskell.TH.ReifyMany
 import Language.Haskell.TH.Syntax
 
-import Data.Monoid (Monoid)
 import Control.Monad.Reader (ReaderT(ReaderT), runReaderT)
 import Control.Monad.RWS (RWST(RWST), runRWST)
 import Control.Monad.State (StateT(StateT), runStateT)
@@ -81,9 +80,6 @@ import Language.Haskell.TH.LanguageExtensions (Extension(..))
 -- Thanks to Richard Eisenberg, GHC 7.10 adds many of the instances
 -- from this module.
 #if !MIN_VERSION_template_haskell(2,10,0)
-import Data.Int (Int8, Int16, Int32, Int64)
-import Data.Word (Word8, Word16, Word32, Word64)
-
 import Language.Haskell.TH.Ppr
 # if MIN_VERSION_template_haskell(2,3,0)
 import Language.Haskell.TH.PprLib
@@ -101,7 +97,7 @@ import Control.Monad (ap, liftM)
 # endif
 
 # if !(MIN_VERSION_base(4,8,0))
-import Data.Word (Word)
+import Data.Monoid (Monoid)
 # endif
 
 # if MIN_VERSION_template_haskell(2,3,0) && defined(LANGUAGE_DeriveDataTypeable)
