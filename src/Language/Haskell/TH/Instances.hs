@@ -117,12 +117,7 @@ import qualified Generics.Deriving.TH as Generic (deriveAll)
 import qualified Control.Monad.Fail as Fail
 #endif
 
--- TODO: Once GHC 8.10 is released, this should be updated to use the
--- proper template haskell version.  Other related usages of this #if
--- should be replaced as well (and do not have a TODO like this).
---
--- #if MIN_VERSION_template_haskell(2,16,0)
-#if __GLASGOW_HASKELL__ >= 809
+#if MIN_VERSION_template_haskell(2,16,0)
 import GHC.Ptr (Ptr(Ptr))
 import GHC.ForeignPtr (newForeignPtr_)
 import System.IO.Unsafe (unsafePerformIO)

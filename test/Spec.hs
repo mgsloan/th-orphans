@@ -25,7 +25,7 @@ main = hspec $ do
     it "Compares types correctly" $
         compare (AppT (ConT ''Maybe) (ConT ''Int)) (AppT (ConT ''Maybe) (ConT ''Char))
             `shouldBe` GT
-#if __GLASGOW_HASKELL__ >= 809
+#if MIN_VERSION_template_haskell(2,16,0)
     it "Lifts bytes" $ do
         let addr = $(do
                 let result = $(do

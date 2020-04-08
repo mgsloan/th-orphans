@@ -4,7 +4,7 @@
 
 module TestUtil where
 
-#if __GLASGOW_HASKELL__ >= 809
+#if MIN_VERSION_template_haskell(2,16,0)
 
 import Language.Haskell.TH.Syntax
 import qualified Data.ByteString as BS
