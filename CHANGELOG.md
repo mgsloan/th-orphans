@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.10 [2020.04.13]
 * Implement `liftTyped` in the `Lift Bytes` instance.
 
 ### 0.13.9 [2019.09.28]
