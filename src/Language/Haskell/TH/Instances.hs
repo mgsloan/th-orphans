@@ -97,7 +97,7 @@ import Control.Monad (ap, liftM)
 # endif
 
 # if !(MIN_VERSION_base(4,8,0))
-import Data.Monoid (Monoid)
+import Data.Monoid (Monoid (..))
 # endif
 
 # if MIN_VERSION_template_haskell(2,3,0) && defined(LANGUAGE_DeriveDataTypeable)
@@ -121,6 +121,20 @@ import qualified Control.Monad.Fail as Fail
 import GHC.Ptr (Ptr(Ptr))
 import GHC.ForeignPtr (newForeignPtr_)
 import System.IO.Unsafe (unsafePerformIO)
+#endif
+
+#if !MIN_VERSION_template_haskell(2,17,0)
+import Control.Applicative (liftA2)
+import Control.Concurrent.MVar (newEmptyMVar, putMVar, readMVar)
+import Control.Monad.Fix (MonadFix (..))
+import System.IO.Unsafe (unsafeInterleaveIO)
+
+import qualified Data.Semigroup as Semi
+
+#if MIN_VERSION_base(4,11,0)
+import Control.Exception (throwIO, catch)
+import GHC.IO.Exception (BlockedIndefinitelyOnMVar (..), FixIOException (..))
+#endif
 #endif
 
 #if !MIN_VERSION_template_haskell(2,11,0)
@@ -420,6 +434,34 @@ instance Lift Bytes where
     where
       size = bytesSize bytes
   liftTyped = unsafeTExpCoerce . lift
+#endif
+
+#if !MIN_VERSION_template_haskell(2,17,0)
+instance Semi.Semigroup a => Semi.Semigroup (Q a) where
+  (<>) = liftA2 (Semi.<>)
+
+instance Monoid a => Monoid (Q a) where
+  mempty = return mempty
+#if !MIN_VERSION_base(4,11,0)
+  mappend = liftA2 mappend
+#endif
+
+-- | If the function passed to 'mfix' inspects its argument,
+-- the resulting action will throw a 'FixIOException'
+-- (@base >=4.11@) or a 'BlockedIndefinitelyOnMVar'
+-- with older @base@.
+--
+instance MonadFix Q where
+  mfix k = do
+    m <- runIO newEmptyMVar
+    ans <- runIO (unsafeInterleaveIO (readMVar m
+#if MIN_VERSION_base(4,11,0)
+        `catch` \BlockedIndefinitelyOnMVar -> throwIO FixIOException
+#endif
+        ))
+    result <- k ans
+    runIO (putMVar m result)
+    return result
 #endif
 
 $(reifyManyWithoutInstances ''Lift [''Info, ''Loc] (const True) >>=

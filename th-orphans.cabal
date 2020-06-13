@@ -39,7 +39,8 @@ library
                       mtl
 
   if !impl(ghc >= 8.0)
-    build-depends:    fail == 4.9.*
+    build-depends:    fail == 4.9.*,
+                      semigroups >= 0.18.5  && < 0.20
 
   -- Use TH to derive Generics instances instead of DeriveGeneric, for < 7.10
   if impl(ghc < 7.10)
