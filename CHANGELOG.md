@@ -1,3 +1,7 @@
+### next [????.??.??]
+* Backport the `Semigroup`, `Monoid`, and `MonadFix` instances for `Q` that
+  were introduced in `template-haskell-2.17.0.0`.
+
 ### 0.13.10 [2020.04.13]
 * Implement `liftTyped` in the `Lift Bytes` instance.
 
