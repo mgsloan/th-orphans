@@ -433,7 +433,11 @@ instance Lift Bytes where
     |]
     where
       size = bytesSize bytes
+#if MIN_VERSION_template_haskell(2,17,0)
+  liftTyped = Code . unsafeTExpCoerce . lift
+#else
   liftTyped = unsafeTExpCoerce . lift
+#endif
 #endif
 
 #if !MIN_VERSION_template_haskell(2,17,0)
