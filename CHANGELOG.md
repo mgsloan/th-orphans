@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.11 [2020.09.29]
 * Allow building with `template-haskell-2.17.0.0` (GHC 9.0).
 * Define `Quote` instances for `ReaderT`, `StateT`, `WriterT`, and `RWST`. In
   order to define these instances on as many versions of `template-haskell` as
