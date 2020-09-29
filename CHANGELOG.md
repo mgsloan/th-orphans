@@ -1,4 +1,9 @@
 ### next [????.??.??]
+* Allow building with `template-haskell-2.17.0.0` (GHC 9.0).
+* Define `Quote` instances for `ReaderT`, `StateT`, `WriterT`, and `RWST`. In
+  order to define these instances on as many versions of `template-haskell` as
+  possible, this library now depends on the `th-compat` library, which
+  backports the `Quote` class to older versions of `template-haskell`.
 * Backport the `Semigroup`, `Monoid`, and `MonadFix` instances for `Q` that
   were introduced in `template-haskell-2.17.0.0`.
 
