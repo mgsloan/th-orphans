@@ -3,7 +3,7 @@
 [![Hackage Dependencies](https://img.shields.io/hackage-deps/v/th-orphans.svg)](http://packdeps.haskellers.com/reverse/th-orphans)
 [![Haskell Programming Language](https://img.shields.io/badge/language-Haskell-blue.svg)][Haskell.org]
 [![BSD3 License](http://img.shields.io/badge/license-BSD3-brightgreen.svg)][tl;dr Legal: BSD3]
-[![Build](https://img.shields.io/travis/mgsloan/th-orphans.svg)](https://travis-ci.org/mgsloan/th-orphans)
+[![Build Status](https://github.com/mgsloan/th-orphans/workflows/Haskell-CI/badge.svg)](https://github.com/mgsloan/th-orphans/actions?query=workflow%3AHaskell-CI)
 
 [Hackage: th-orphans]:
   http://hackage.haskell.org/package/th-orphans
