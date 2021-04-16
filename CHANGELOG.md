@@ -1,3 +1,7 @@
+### next [????.??.??]
+* Implement `qGetDoc` and `qPutDoc` (introduced in `template-haskell-2.18.0.0`)
+  for the `Quasi` instances defined in `th-orphans`.
+
 ### 0.13.11 [2020.09.29]
 * Allow building with `template-haskell-2.17.0.0` (GHC 9.0).
 * Define `Quote` instances for `ReaderT`, `StateT`, `WriterT`, and `RWST`. In
