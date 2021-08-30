@@ -21,8 +21,9 @@ tested-with:        GHC == 7.0.4
                   , GHC == 8.4.4
                   , GHC == 8.6.5
                   , GHC == 8.8.4
-                  , GHC == 8.10.4
+                  , GHC == 8.10.7
                   , GHC == 9.0.1
+                  , GHC == 9.2.*
 synopsis:           Orphan instances for TH datatypes
 description:        Orphan instances for TH datatypes.  In particular, instances
                     for Ord and Lift, as well as a few missing Show / Eq.  These
@@ -32,8 +33,10 @@ extra-source-files: CHANGELOG.md, README.md
 
 library
   build-depends:      base >= 4.3 && < 5,
-                      template-haskell < 2.18,
+                      template-haskell < 2.19,
                       th-compat >= 0.1 && < 0.2,
+                      -- Temporary upper bounds until https://github.com/mgsloan/th-reify-many/issues/9 is resolved
+                      th-expand-syns < 0.4.9,
                       -- https://github.com/mboes/th-lift/issues/14
                       th-lift >= 0.7.1,
                       th-reify-many >= 0.1 && < 0.2,
