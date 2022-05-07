@@ -91,6 +91,9 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
             , ('qGetDoc,             [| MTL.lift . qGetDoc |])
             , ('qPutDoc,             [| \a b -> MTL.lift $ qPutDoc a b |])
 #endif
+#if MIN_VERSION_template_haskell(2,19,0)
+            , ('qGetPackageRoot,     [| MTL.lift qGetPackageRoot |])
+#endif
             ]
 
           mkDec :: Name -> Q Exp -> Q Dec
