@@ -1,3 +1,7 @@
+### next [????.??.??]
+* Implement `qGetPackageRoot` (introduced in `template-haskell-2.19.0.0`)
+  for the `Quasi` instances defined in `th-orphans`.
+
 ### 0.13.12 [2021.08.30]
 * Implement `qGetDoc` and `qPutDoc` (introduced in `template-haskell-2.18.0.0`)
   for the `Quasi` instances defined in `th-orphans`.
