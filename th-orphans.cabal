@@ -1,5 +1,5 @@
 name:               th-orphans
-version:            0.13.12
+version:            0.13.13
 cabal-version:      >= 1.10
 build-type:         Simple
 license:            BSD3
