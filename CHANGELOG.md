@@ -1,3 +1,6 @@
+### 0.13.14 [2022.08.21]
+* Only depend on `th-lift-instances` for `ghc <= 7.8`.
+
 ### 0.13.13 [2022.05.19]
 * Implement `qGetPackageRoot` (introduced in `template-haskell-2.19.0.0`)
   for the `Quasi` instances defined in `th-orphans`.
