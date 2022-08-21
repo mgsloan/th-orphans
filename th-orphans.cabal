@@ -38,7 +38,6 @@ library
                       -- https://github.com/mboes/th-lift/issues/14
                       th-lift >= 0.7.1,
                       th-reify-many >= 0.1.9 && < 0.2,
-                      th-lift-instances,
                       mtl >= 2
 
   if !impl(ghc >= 8.0)
@@ -48,6 +47,7 @@ library
   -- Use TH to derive Generics instances instead of DeriveGeneric, for < 7.10
   if impl(ghc < 7.10)
     build-depends:    generic-deriving >= 1.9
+                    , th-lift-instances
 
   -- Prior to GHC 7.6, GHC generics lived in ghc-prim
   if impl(ghc >= 7.2) && impl(ghc < 7.6)

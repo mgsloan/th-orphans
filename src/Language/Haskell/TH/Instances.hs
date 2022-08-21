@@ -69,7 +69,9 @@ import Control.Monad.RWS (RWST(RWST), runRWST)
 import Control.Monad.State (StateT(StateT), runStateT)
 import qualified Control.Monad.Trans as Trans (MonadTrans(lift))
 import Control.Monad.Writer (WriterT(WriterT), runWriterT)
+#if !MIN_VERSION_base(4,8,0)
 import Instances.TH.Lift ()
+#endif
 
 #if !(MIN_VERSION_template_haskell(2,8,0))
 import Unsafe.Coerce (unsafeCoerce)
