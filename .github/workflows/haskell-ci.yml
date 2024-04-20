@@ -244,6 +244,8 @@ jobs:
           if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then echo "package th-orphans" >> cabal.project ; fi
           if [ $((HCNUMVER >= 80200)) -ne 0 ] ; then echo "    ghc-options: -Werror=missing-methods" >> cabal.project ; fi
           cat >> cabal.project <<EOF
+          if ! impl ( ghc >= 8.0 )
+            constraints: safe < 0.3.18
           EOF
           $HCPKG list --simple-output --names-only | perl -ne 'for (split /\s+/) { print "constraints: $_ installed\n" unless /^(th-orphans)$/; }' >> cabal.project.local
           cat cabal.project
