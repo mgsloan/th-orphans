@@ -10,13 +10,7 @@ copyright:          (c) Matt Morrow, Michael Sloan, Ryan Scott
 maintainer:         Ryan Scott <ryan.gl.scott@gmail.com>
 bug-reports:        https://github.com/mgsloan/th-orphans/issues
 stability:          experimental
-tested-with:        GHC == 7.0.4
-                  , GHC == 7.2.2
-                  , GHC == 7.4.2
-                  , GHC == 7.6.3
-                  , GHC == 7.8.4
-                  , GHC == 7.10.3
-                  , GHC == 8.0.2
+tested-with:        GHC == 8.0.2
                   , GHC == 8.2.2
                   , GHC == 8.4.4
                   , GHC == 8.6.5
@@ -25,8 +19,9 @@ tested-with:        GHC == 7.0.4
                   , GHC == 9.0.2
                   , GHC == 9.2.8
                   , GHC == 9.4.8
-                  , GHC == 9.6.4
+                  , GHC == 9.6.6
                   , GHC == 9.8.2
+                  , GHC == 9.10.1
 synopsis:           Orphan instances for TH datatypes
 description:        Orphan instances for TH datatypes.  In particular, instances
                     for Ord and Lift, as well as a few missing Show / Eq.  These
@@ -35,27 +30,13 @@ description:        Orphan instances for TH datatypes.  In particular, instances
 extra-source-files: CHANGELOG.md, README.md
 
 library
-  build-depends:      base >= 4.3 && < 5,
-                      template-haskell < 2.23,
+  build-depends:      base >= 4.9 && < 5,
+                      template-haskell >= 2.11 && < 2.23,
                       th-compat >= 0.1 && < 0.2,
                       -- https://github.com/mboes/th-lift/issues/14
                       th-lift >= 0.7.1,
                       th-reify-many >= 0.1.9 && < 0.2,
                       mtl >= 2
-
-  if !impl(ghc >= 8.0)
-    build-depends:    fail == 4.9.*,
-                      semigroups >= 0.18.5  && < 0.21
-
-  -- Use TH to derive Generics instances instead of DeriveGeneric, for < 7.10
-  if impl(ghc < 7.10)
-    build-depends:    generic-deriving >= 1.9
-                    , th-lift-instances
-
-  -- Prior to GHC 7.6, GHC generics lived in ghc-prim
-  if impl(ghc >= 7.2) && impl(ghc < 7.6)
-    build-depends:    ghc-prim
-
   hs-source-dirs:     src
   ghc-options:        -Wall
   if impl(ghc >= 8.6)

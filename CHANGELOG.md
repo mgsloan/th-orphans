@@ -1,3 +1,6 @@
+### next [????.??.??]
+* Drop support for pre-8.0 versions of GHC.
+
 ### 0.13.14 [2022.08.21]
 * Only depend on `th-lift-instances` for `ghc <= 7.8`.
 

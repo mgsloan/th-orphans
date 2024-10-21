@@ -1,13 +1,9 @@
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 -- | Defines a utility function for deriving 'Quasi' instances for monad
 -- transformer data types.
-module Language.Haskell.TH.Instances.Internal
-  ( deriveQuasiTrans
-  , Proxy2
-  ) where
+module Language.Haskell.TH.Instances.Internal (deriveQuasiTrans) where
 
 import qualified Control.Monad.Trans as MTL (lift)
 import Language.Haskell.TH.Lib
@@ -17,11 +13,7 @@ import Language.Haskell.TH.Syntax
 deriveQuasiTrans ::
      Q Type  -- ^ The instance head. For example, this might be of the form:
              --
-             --   > [t| forall r m. Quasi m => Proxy2 (ReaderT r m) |]
-             --
-             --   Why use 'Proxy2' instead of 'Quasi'? Sadly, GHC 7.0/7.2 will
-             --   not accept it if you use the latter due to old TH bugs, so we
-             --   use 'Proxy2' as an ugly workaround.
+             --   > [t| forall r m. Quasi m => Quasi (ReaderT r m) |]
   -> Q Exp   -- ^ The implementation of 'qRecover'
   -> Q [Dec] -- ^ The 'Quasi' instance declaration
 deriveQuasiTrans qInstHead qRecoverExpr = do
@@ -30,7 +22,7 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
       qInstCxt = return instCxt
       qInstTy  = case mangledInstTy of
                    ConT proxy2 `AppT` instTy
-                     |  proxy2 == ''Proxy2
+                     |  proxy2 == ''Quasi
                      -> conT ''Quasi `appT` return instTy
                    _ -> fail $ "Unexpected type " ++ pprint mangledInstTy
   instDec <- instanceD qInstCxt qInstTy qInstMethDecs
@@ -53,11 +45,9 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
             , ('qReify,              [| MTL.lift . qReify |])
             , ('qLocation,           [| MTL.lift qLocation |])
             , ('qRunIO,              [| MTL.lift . qRunIO |])
-#if MIN_VERSION_template_haskell(2,7,0)
             , ('qReifyInstances,     [| \a b -> MTL.lift $ qReifyInstances a b |])
             , ('qLookupName,         [| \a b -> MTL.lift $ qLookupName a b |])
             , ('qAddDependentFile,   [| MTL.lift . qAddDependentFile |])
-# if MIN_VERSION_template_haskell(2,9,0)
             , ('qReifyRoles,         [| MTL.lift . qReifyRoles |])
             , ('qReifyAnnotations,   [| MTL.lift . qReifyAnnotations |])
             , ('qReifyModule,        [| MTL.lift . qReifyModule |])
@@ -65,16 +55,10 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
             , ('qAddModFinalizer,    [| MTL.lift . qAddModFinalizer |])
             , ('qGetQ,               [| MTL.lift qGetQ |])
             , ('qPutQ,               [| MTL.lift . qPutQ |])
-# endif
-# if MIN_VERSION_template_haskell(2,11,0)
             , ('qReifyFixity,        [| MTL.lift . qReifyFixity |])
             , ('qReifyConStrictness, [| MTL.lift . qReifyConStrictness |])
             , ('qIsExtEnabled,       [| MTL.lift . qIsExtEnabled |])
             , ('qExtsEnabled,        [| MTL.lift qExtsEnabled |])
-# endif
-#elif MIN_VERSION_template_haskell(2,5,0)
-            , ('qClassInstances,     [| \a b -> MTL.lift $ qClassInstances a b |])
-#endif
 #if MIN_VERSION_template_haskell(2,14,0)
             , ('qAddForeignFilePath, [| \a b -> MTL.lift $ qAddForeignFilePath a b |])
             , ('qAddTempFile,        [| MTL.lift . qAddTempFile |])
@@ -100,7 +84,3 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
           mkDec methName methRhs = valD (varP methName) (normalB methRhs) []
 
       in map (uncurry mkDec) instMeths
-
--- | See the Haddocks for 'deriveQuasiTrans' for an explanation of why this
--- type needs to exist.
-data Proxy2 (m :: * -> *)
