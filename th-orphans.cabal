@@ -32,10 +32,10 @@ extra-source-files: CHANGELOG.md, README.md
 
 library
   build-depends:      base >= 4.9 && < 5,
-                      template-haskell >= 2.11 && < 2.23,
+                      template-haskell >= 2.11 && < 2.24,
                       th-compat >= 0.1 && < 0.2,
                       -- https://github.com/mboes/th-lift/issues/14
-                      th-lift >= 0.7.1,
+                      th-lift >= 0.8,
                       th-reify-many >= 0.1.9 && < 0.2,
                       mtl >= 2
   hs-source-dirs:     src
