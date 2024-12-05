@@ -1,4 +1,4 @@
-### next [????.??.??]
+### 0.13.16 [2024.12.05]
 * Support building with `template-haskell-2.23.0`.
 
 ### 0.13.15 [2024.10.22]
