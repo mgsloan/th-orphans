@@ -45,7 +45,7 @@ import Control.Monad.Writer (WriterT(WriterT), runWriterT)
 import Language.Haskell.TH.LanguageExtensions (Extension(..))
 #endif
 
-#if MIN_VERSION_template_haskell(2,16,0) && !(MIN_VERSION_template_haskell(2,22,1))
+#if MIN_VERSION_template_haskell(2,16,0) && !(MIN_VERSION_template_haskell(2,23,0))
 import GHC.Ptr (Ptr(Ptr))
 import GHC.ForeignPtr (newForeignPtr_)
 import Language.Haskell.TH.Syntax.Compat (liftTypedFromUntypedSplice)
@@ -94,7 +94,7 @@ $(deriveQuasiTrans
     [t| forall r w s m. (Quasi m, Monoid w) => Quasi (RWST r w s m) |]
     [e| \m1 m2 -> RWST $ \ r s -> runRWST m1 r s `qRecover` runRWST m2 r s |])
 
-#if MIN_VERSION_template_haskell(2,16,0) && !(MIN_VERSION_template_haskell(2,22,1))
+#if MIN_VERSION_template_haskell(2,16,0) && !(MIN_VERSION_template_haskell(2,23,0))
 instance Lift Bytes where
   lift bytes =
     [| Bytes

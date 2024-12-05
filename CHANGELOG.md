@@ -1,3 +1,6 @@
+### next [????.??.??]
+* Support building with `template-haskell-2.23.0`.
+
 ### 0.13.15 [2024.10.22]
 * Support building with `template-haskell-2.22.1`.
 * Drop support for pre-8.0 versions of GHC.
