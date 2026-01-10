@@ -1,3 +1,6 @@
+### next [????.??.??]
+* Remove unused `ghc-prim` dependency in the test suite.
+
 ### 0.13.16 [2024.12.05]
 * Support building with `template-haskell-2.23.0`.
 

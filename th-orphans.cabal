@@ -53,7 +53,6 @@ test-suite test
   other-modules:      TestUtil
   build-depends:      base,
                       bytestring,
-                      ghc-prim,
                       hspec,
                       template-haskell,
                       th-lift,

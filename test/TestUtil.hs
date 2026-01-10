@@ -9,7 +9,7 @@ module TestUtil where
 import Language.Haskell.TH.Syntax
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Internal as BS
-import GHC.Prim (Addr#)
+import GHC.Exts (Addr#)
 import GHC.ForeignPtr (newForeignPtr_)
 import GHC.Ptr (Ptr(Ptr))
 
