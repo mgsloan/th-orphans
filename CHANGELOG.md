@@ -1,3 +1,6 @@
+### next [????.??.??]
+* Implement `qAddDependentDirectory` (introduced in `template-haskell-2.25.0.0`)
+
 ### 0.13.17 [2026.01.10]
 * Allow building with `template-haskell-2.24.*` (GHC 9.14).
 * Remove unused `ghc-prim` dependency in the test suite.

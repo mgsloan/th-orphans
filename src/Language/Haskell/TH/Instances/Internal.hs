@@ -78,6 +78,9 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
 #if MIN_VERSION_template_haskell(2,19,0)
             , ('qGetPackageRoot,     [| MTL.lift qGetPackageRoot |])
 #endif
+#if MIN_VERSION_template_haskell(2,25,0)
+            , ('qAddDependentDirectory, [| MTL.lift . qAddDependentDirectory |])
+#endif
             ]
 
           mkDec :: Name -> Q Exp -> Q Dec
