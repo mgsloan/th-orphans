@@ -81,6 +81,10 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
 #if MIN_VERSION_template_haskell(2,25,0)
             , ('qAddDependentDirectory, [| MTL.lift . qAddDependentDirectory |])
 #endif
+-- TODO RGS: Use proper CPP once template-haskell-2.26 has been cut
+#if __GLASGOW_HASKELL__ >= 1001
+            , ('qRunQ,               [| MTL.lift . qRunQ |])
+#endif
             ]
 
           mkDec :: Name -> Q Exp -> Q Dec

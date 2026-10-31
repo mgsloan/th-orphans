@@ -1,4 +1,7 @@
 ### next [????.??.??]
+* Implement `qRunQ` (introduced in `template-haskell-2.26.0.0`)
+
+### next [????.??.??]
 * Implement `qAddDependentDirectory` (introduced in `template-haskell-2.25.0.0`)
 
 ### 0.13.17 [2026.01.10]
