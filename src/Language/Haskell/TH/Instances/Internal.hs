@@ -39,6 +39,10 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
             [ -- qRecover is different for each instance
               ('qRecover,            qRecoverExpr)
 
+              -- All other methods have default implementations in terms of qRunQ
+#if MIN_VERSION_template_haskell(2,26,0)
+            , ('qRunQ,               [| MTL.lift . qRunQ |])
+#else
               -- The remaining methods are straightforward
             , ('qNewName,            [| MTL.lift . qNewName |])
             , ('qReport,             [| \a b -> MTL.lift $ qReport a b |])
@@ -59,27 +63,28 @@ deriveQuasiTrans qInstHead qRecoverExpr = do
             , ('qReifyConStrictness, [| MTL.lift . qReifyConStrictness |])
             , ('qIsExtEnabled,       [| MTL.lift . qIsExtEnabled |])
             , ('qExtsEnabled,        [| MTL.lift qExtsEnabled |])
-#if MIN_VERSION_template_haskell(2,14,0)
+  #if MIN_VERSION_template_haskell(2,14,0)
             , ('qAddForeignFilePath, [| \a b -> MTL.lift $ qAddForeignFilePath a b |])
             , ('qAddTempFile,        [| MTL.lift . qAddTempFile |])
-#elif MIN_VERSION_template_haskell(2,12,0)
+  #elif MIN_VERSION_template_haskell(2,12,0)
             , ('qAddForeignFile,     [| \a b -> MTL.lift $ qAddForeignFile a b |])
-#endif
-#if MIN_VERSION_template_haskell(2,13,0)
+  #endif
+  #if MIN_VERSION_template_haskell(2,13,0)
             , ('qAddCorePlugin,      [| MTL.lift . qAddCorePlugin |])
-#endif
-#if MIN_VERSION_template_haskell(2,16,0)
+  #endif
+  #if MIN_VERSION_template_haskell(2,16,0)
             , ('qReifyType,          [| MTL.lift . qReifyType |])
-#endif
-#if MIN_VERSION_template_haskell(2,18,0)
+  #endif
+  #if MIN_VERSION_template_haskell(2,18,0)
             , ('qGetDoc,             [| MTL.lift . qGetDoc |])
             , ('qPutDoc,             [| \a b -> MTL.lift $ qPutDoc a b |])
-#endif
-#if MIN_VERSION_template_haskell(2,19,0)
+  #endif
+  #if MIN_VERSION_template_haskell(2,19,0)
             , ('qGetPackageRoot,     [| MTL.lift qGetPackageRoot |])
-#endif
-#if MIN_VERSION_template_haskell(2,25,0)
+  #endif
+  #if MIN_VERSION_template_haskell(2,25,0)
             , ('qAddDependentDirectory, [| MTL.lift . qAddDependentDirectory |])
+  #endif
 #endif
             ]
 
