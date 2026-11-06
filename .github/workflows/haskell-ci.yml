@@ -25,7 +25,7 @@ jobs:
     timeout-minutes:
       60
     container:
-      image: buildpack-deps:noble
+      image: buildpack-deps:jammy
     continue-on-error: ${{ matrix.allow-failure }}
     strategy:
       matrix:
@@ -110,7 +110,7 @@ jobs:
       - name: apt-get install
         run: |
           apt-get update
-          apt-get install -y --no-install-recommends gnupg ca-certificates dirmngr curl git software-properties-common libnuma-dev
+          apt-get install -y --no-install-recommends gnupg ca-certificates dirmngr curl git software-properties-common libtinfo5 libnuma-dev
       - name: Install GHCup
         run: |
           mkdir -p "$HOME/.ghcup/bin"
@@ -267,9 +267,9 @@ jobs:
       - name: restore cache
         uses: actions/cache/restore@v6
         with:
-          key: noble-${{ matrix.compiler }}-${{ github.sha }}
+          key: jammy-${{ matrix.compiler }}-${{ github.sha }}
           path: ~/.cabal/store
-          restore-keys: noble-${{ matrix.compiler }}-
+          restore-keys: jammy-${{ matrix.compiler }}-
       - name: install dependencies
         run: |
           $CABAL v2-build $ARG_COMPILER --disable-tests --disable-benchmarks --dependencies-only -j2 all
@@ -291,5 +291,5 @@ jobs:
         if: always()
         uses: actions/cache/save@v6
         with:
-          key: noble-${{ matrix.compiler }}-${{ github.sha }}
+          key: jammy-${{ matrix.compiler }}-${{ github.sha }}
           path: ~/.cabal/store

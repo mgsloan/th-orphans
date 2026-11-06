@@ -1,2 +1,5 @@
 no-tests-no-benchmarks: False
 unconstrained:          False
+
+-- Ubuntu 22.04 is the last one with libtinfo5, needed by GHC 8.2 and 8.0
+distribution: jammy
